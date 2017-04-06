@@ -1,4 +1,3 @@
 # ParaGraphL
 
-## Summary
-TODO
+Parallel Graph Layout on Web!
