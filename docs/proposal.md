@@ -33,8 +33,11 @@ We are going to develop this project on our own laptops. Since this library is a
 We will start from scratch, can we will mainly focus on implementing the core part (layouting large graph in parallel with WebGL). But the following libraries may be considered as comparisons or helpers.
 
 ### Libraries
-- [sigma.js](http://sigmajs.org/)
+#### Visualization
 - [d3.js](https://d3js.org/)
+- [echarts.js](http://echarts.baidu.com/)
+- [sigma.js](http://sigmajs.org/)
+#### WebGL as GPGPU
 - [turbo.js](https://turbo.github.io/)
 - [gpgpu.js](https://github.com/amoffat/gpgpu.js)
 
