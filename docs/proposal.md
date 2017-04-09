@@ -20,7 +20,23 @@ Describe why the problem is challenging. What aspects of the problem might make 
 
 ## Resouces
 
-We are going to develop this project on our own laptops. We will start from scratch. There are several papers we are going to use as reference when implementing these graph layout algorithms. Since this library is aimed at accelerating for mainstream PC/Mac, we don't need special machines.
+### Devices
+We are going to develop this project on our own laptops. Since this library is aimed at accelerating for mainstream PC/Mac, we don't need special machines.
+
+### Papers and Articles
+- Gibson, Helen, Joe Faith, and Paul Vickers. "A survey of two-dimensional graph layout techniques for information visualisation." Information visualization 12.3-4 (2013): 324-357.
+- Godiyal, Apeksha, et al. "Rapid multipole graph drawing on the GPU." International Symposium on Graph Drawing. Springer Berlin Heidelberg, 2008.
+- [Large-scale Graph Visualisations in the Browser](http://slides.com/nicolasjoseph/largescalevis#/)
+- [Unleash Your Inner Supercomputer: Your Guide to GPGPU with WebGL](http://www.vizitsolutions.com/portfolio/webgl/gpgpu/)
+
+### Code Base
+We will start from scratch, can we will mainly focus on implementing the core part (layouting large graph in parallel with WebGL). But the following libraries may be considered as comparisons or helpers.
+
+### Libraries
+- [sigma.js](http://sigmajs.org/)
+- [d3.js](https://d3js.org/)
+- [turbo.js](https://turbo.github.io/)
+- [gpgpu.js](https://github.com/amoffat/gpgpu.js)
 
 ## Goals and Deliverables
 
