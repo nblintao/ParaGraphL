@@ -8,7 +8,7 @@
 We are going to utilize GPU to accelerate several large graph layout algorithms using GLSL, and finally produce a javascript library.
 
 ## Background
-Visualization can help make better sense of the underlying information for graph data like social networks. Layout is an essential part of visulization. A good layout algorithm will project the nodes in the graph into a 2-D plane, and the distance between two nodes in that plane should indicate the connection strength between them. [Force-directed graph](https://en.wikipedia.org/wiki/Force-directed_graph_drawing) is a popular class of graph layout algorithms.
+Visualization can help make better sense of the underlying information for graph data like social networks. Layout is an essential part of visulization. A good layout algorithm will project the nodes in the graph into a 2-D plane, and the distance between two nodes in that plane should indicate the connection strength between them. [Force-directed graph](https://en.wikipedia.org/wiki/Force-directed_graph_drawing) is a popular class of graph layout algorithms. This is a visualization of links between pages on a wiki using a force-directed layout (from WikiPedia):
 
 ![](https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Visualization_of_wiki_structure_using_prefuse_visualization_package.png/600px-Visualization_of_wiki_structure_using_prefuse_visualization_package.png)
 
