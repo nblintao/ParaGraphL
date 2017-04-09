@@ -40,6 +40,7 @@ We will start from scratch, can we will mainly focus on implementing the core pa
 - [d3.js](https://d3js.org/)
 - [echarts.js](http://echarts.baidu.com/)
 - [sigma.js](http://sigmajs.org/)
+
 #### WebGL as GPGPU
 - [turbo.js](https://turbo.github.io/)
 - [gpgpu.js](https://github.com/amoffat/gpgpu.js)
