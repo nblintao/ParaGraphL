@@ -9,7 +9,7 @@ We are going to utilize GPU to accelerate several large graph layout algorithms 
 
 ## Background
 
-It is a common desire of data scientists and some artists to visualize, interact, and analyze large-scale graphs on a web platform. Honestly, running on browsers with JavaScript is not the most efficient platform to calculate the layout of large graphs, considering some great graph visualization software like [Gephi](https://gephi.org/). But browsers is a popular visualization platform because of the cost of deployment and maintenance and other reasons ([Why in the browser?](http://slides.com/nicolasjoseph/largescalevis#/5)). It would be fascinating if an end user could visualize and interactive with large-scale graphs by simply opening a web page without any installment or configuration.
+It is a common desire of data scientists and some artists to visualize, interact, and analyze large-scale graphs on a web platform. Honestly, running on browsers with JavaScript is not the most efficient platform to calculate the layout of large graphs, considering some great graph visualization software like [Gephi](https://gephi.org/). But browsers is a popular visualization platform because of the cost of deployment and maintenance and other business and engineering reasons ([Why in the browser?](http://slides.com/nicolasjoseph/largescalevis#/5)). It would be fascinating if an end user could visualize and interactive with large-scale graphs by simply opening a web page without any installment or configuration.
 
 
 ## The Challenge
@@ -24,15 +24,23 @@ We are going to develop this project on our own laptops. We will start from scra
 
 ## Goals and Deliverables
 
-PLAN TO ACHIVE : finish GPU implementations of different graph layout algorithms, compare the performance with current CPU librarys.
+### Plan to Achive
+Finish GPU implementations of different graph layout algorithms, compare the performance with current CPU librarys.
 
 HOPE TO ACHIVE :
 
-THE DEMO : We will show the webpage that utilize our library to generate layouts for large graphs, and we will also show the speedup graph of our library comparing with other CPU libraries.
+### Hope to Achive
+
+### Demo
+We will show the webpage that utilize our library to generate layouts for large graphs, and we will also show the speedup graph of our library comparing with other CPU libraries.
 
 ## Platform Choice
 
 We will code in GSLS, since it is suitable for developing a library for graphics related work.
 
 # Schedule
-Produce a schedule for your project. Your schedule should have at least one item to do per week. List what you plan to get done each week from now until the parallelism competition in order to meet your project goals. Keep in mind that due to other classes, you'll have more time to work some weeks than others (work that into the schedule). You will need to re-evaluate your progress at the end of each week and update this schedule accordingly. Note the intermediate checkpoint deadline is April 16th. In your schedule we encourage you to be precise as precise as possible. It's often helpful to work backward in time from your deliverables and goals, writing down all the little things you'll need to do (establish the dependencies!).
+
+- Week 1 (04/10 - 04/16): Implement a test harness and baseline reference. The baseline reference can be visualizing large graphs with [D3](https://d3js.org/), a popular JavaScript library for visualization. Also, the framework for invoking GLSL with WebGL will be implemented.
+- Week 2 (04/17 - 04/23): Implement one or two graph layout algorithms with GLSL, and then test and optimize them using the harness above.
+- Week 3 (04/24 - 04/30): Hack more aggressive optimizations to exploit the parallel ability of GPUs. Or try to design and implement other graph layout algorithms suitable for the features of WebGL and GLSL.
+- Week 4 (05/01 - 05/07): Optimize for other parts of the framework other than layout. One important thing is to speed up the rendering because this can be a bottleneck after speeding up layout calculations. We also need to improve the user interfaces and documents of our framework.
