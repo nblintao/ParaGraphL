@@ -27,8 +27,6 @@ We are going to develop this project on our own laptops. We will start from scra
 ### Plan to Achive
 Finish GPU implementations of different graph layout algorithms, compare the performance with current CPU librarys.
 
-HOPE TO ACHIVE :
-
 ### Hope to Achive
 
 ### Demo
@@ -38,9 +36,13 @@ We will show the webpage that utilize our library to generate layouts for large 
 
 We will code in GSLS, since it is suitable for developing a library for graphics related work.
 
-# Schedule
+## Schedule
 
-- Week 1 (04/10 - 04/16): Implement a test harness and baseline reference. The baseline reference can be visualizing large graphs with [D3](https://d3js.org/), a popular JavaScript library for visualization. Also, the framework for invoking GLSL with WebGL will be implemented.
-- Week 2 (04/17 - 04/23): Implement one or two graph layout algorithms with GLSL, and then test and optimize them using the harness above.
-- Week 3 (04/24 - 04/30): Hack more aggressive optimizations to exploit the parallel ability of GPUs. Or try to design and implement other graph layout algorithms suitable for the features of WebGL and GLSL.
-- Week 4 (05/01 - 05/07): Optimize for other parts of the framework other than layout. One important thing is to speed up the rendering because this can be a bottleneck after speeding up layout calculations. We also need to improve the user interfaces and documents of our framework.
+### Week 1 (04/10 - 04/16)
+Implement a test harness and baseline reference. The baseline reference can be visualizing large graphs with [D3](https://d3js.org/), a popular JavaScript library for visualization. Also, the framework for invoking GLSL with WebGL will be implemented.
+### Week 2 (04/17 - 04/23)
+Implement one or two graph layout algorithms with GLSL, and then test and optimize them using the harness above.
+### Week 3 (04/24 - 04/30)
+Hack more aggressive optimizations to exploit the parallel ability of GPUs. Or try to design and implement other graph layout algorithms suitable for the features of WebGL and GLSL.
+### Week 4 (05/01 - 05/07)
+Optimize for other parts of the framework other than layout. One important thing is to speed up the rendering because this can be a bottleneck after speeding up layout calculations. We also need to improve the user interfaces and documents of our framework.
