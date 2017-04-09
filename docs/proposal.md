@@ -8,6 +8,9 @@
 We are going to utilize GPU to accelerate several large graph layout algorithms using GLSL, and finally produce a javascript library.
 
 ## Background
+Visualization can help make better sense of the underlying information for graph data like social networks. Layout is an essential part of visulization. A good layout algorithm will project the nodes in the graph into a 2-D plane, and the distance between two nodes in that plane should indicate the connection strength between them. [Force-directed graph](https://en.wikipedia.org/wiki/Force-directed_graph_drawing) is a popular class of graph layout algorithms.
+
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Visualization_of_wiki_structure_using_prefuse_visualization_package.png/600px-Visualization_of_wiki_structure_using_prefuse_visualization_package.png)
 
 It is a common desire of data scientists and some artists to visualize, interact, and analyze large-scale graphs on a web platform. Honestly, running on browsers with JavaScript is not the most efficient platform to calculate the layout of large graphs, considering some great graph visualization software like [Gephi](https://gephi.org/). But browsers is a popular visualization platform because of the cost of deployment and maintenance and other business and engineering reasons ([Why in the browser?](http://slides.com/nicolasjoseph/largescalevis#/5)). It would be fascinating if an end user could visualize and interactive with large-scale graphs by simply opening a web page without any installment or configuration.
 
