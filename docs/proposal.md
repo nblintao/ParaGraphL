@@ -8,7 +8,9 @@
 We are going to utilize GPU to accelerate several large graph layout algorithms using GLSL, and finally produce a javascript library.
 
 ## Background
-If your project involves accelerating a compute-intensive application, describe the application or piece of the application you are going to implement in more detail. This description need only be a few paragraphs. It might be helpful to include a block diagram or pseudocode of the basic idea. An important detail is what aspects of the problem might benefit from parallelism? and why?
+
+It is a common desire of data scientists and some artists to visualize, interact, and analyze large-scale graphs on a web platform. Honestly, running on browsers with JavaScript is not the most efficient platform to calculate the layout of large graphs, considering some great graph visualization software like [Gephi](https://gephi.org/). But browsers is a popular visualization platform because of the cost of deployment and maintenance and other reasons ([Why in the browser?](http://slides.com/nicolasjoseph/largescalevis#/5)). It would be fascinating if an end user could visualize and interactive with large-scale graphs by simply opening a web page without any installment or configuration.
+
 
 ## The Challenge
 Describe why the problem is challenging. What aspects of the problem might make it difficult to parallelize? In other words, what to you hope to learn by doing the project?
@@ -24,9 +26,9 @@ We are going to develop this project on our own laptops. We will start from scra
 
 PLAN TO ACHIVE : finish GPU implementations of different graph layout algorithms, compare the performance with current CPU librarys.
 
-HOPE TO ACHIVE : 
+HOPE TO ACHIVE :
 
-THE DEMO : We will show the webpage that utilize our library to generate layouts for large graphs, and we will also show the speedup graph of our library comparing with other CPU libraries. 
+THE DEMO : We will show the webpage that utilize our library to generate layouts for large graphs, and we will also show the speedup graph of our library comparing with other CPU libraries.
 
 ## Platform Choice
 
