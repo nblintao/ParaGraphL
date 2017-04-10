@@ -48,15 +48,26 @@ We will start from scratch, can we will mainly focus on implementing the core pa
 ## Goals and Deliverables
 
 ### Plan to Achive
-Finish GPU implementations of different graph layout algorithms, compare the performance with current CPU librarys.
+
+At the beginning, we will implement a test harness and baseline reference. The baseline reference can be visualizing large graphs with [D3](https://d3js.org/), a popular JavaScript library for visualization.
+
+Then, we will design and/or implement several graph layout algorithms with GLSL, and then test and optimize them using the harness above. Some great graph layout algorithms are have never been implemented in parallel before, while others may be designed for parallel computing but have different tradeoff from our platform, which meaning there is a large design space and need to be well tuned.
+
+We cannot give a clear target how much speedup we will get, but we will try our best to ultize the knowledege and experience we got in this course, and get the performance as good as possible.
+
+We will also optimize for other parts of the framework other than layout. One important thing is to speed up the rendering because this can be a bottleneck after speeding up layout calculations. We also need to improve the user interfaces and documents of our framework.
+
+In the demo, we will show a web page that visualize large-scale graphs with our library (several different layout algorithms can be chosen), and then compare it with popular vsiaulzation libraries which do not utilize GPUs. We will also show a speedup graph of our library compared to other popular libraries.
 
 ### Hope to Achive
+Current GPGPU libraries for WebGL have every simple abstractions and interfaces and thus may not produce enough performance as raw WebGL.
+We will try to hack more aggressive optimizations to exploit the parallel ability of GPUs, if the efficiency of current libraries cannot meet our requirement. This may speedup our layout algorithms further more.
 
-We will try to hack on WebGL if the efficiency of current libraries cannot meet our requirement, and even create a better general purpose computing framework on WebGL at the end.
+If we have learned some generalizable ideas during hacking WebGL, we may also create a better general purpose computing framework on WebGL and open source it.
 
 
 ### Demo
-We will show the webpage that utilize our library to generate layouts for large graphs, and we will also show the speedup graph of our library comparing with other CPU libraries.
+
 
 ## Platform Choice
 
