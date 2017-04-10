@@ -16,10 +16,13 @@ It is a common desire of data scientists and some artists to visualize, interact
 
 
 ## The Challenge
-Describe why the problem is challenging. What aspects of the problem might make it difficult to parallelize? In other words, what to you hope to learn by doing the project?
+The graph layout algorithm could be considered as an iterative graph algorithm which needs a lot of communications between nodes, for which CUDA or GraphLab could be used to optimize parallelization and synchronization. The greatest challenge is that there is no standard general purpose parallel programming model (like CUDA) in web platforms.
 
-- Describe the workload: what are the dependencies, what are its memory access characteristics? (is there locality? is there a high communication to computation ratio?), is there divergent execution?
-- Describe constraints: What are the properties of the system that make mapping the workload to it challenging?
+[WebGL](https://en.wikipedia.org/wiki/WebGL) is a JavaScript API for rendering 3D graphics with GPUs in modern browsers, but it only supports the interfaces for computer graphics. We will try to use WebGL as a general purpose computing engine, with the help of libraries like [turbo.js](https://turbo.github.io/) and [gpgpu.js](https://github.com/amoffat/gpgpu.js). The basic idea of these libraries is to map a thread to a pixel, and then use [GLSL](https://en.wikipedia.org/wiki/OpenGL_Shading_Language) (OpenGL Shading Language) to describe the operations for each thread. These libraries have every simple abstractions and interface and thus may not get enough performance as raw WebGL. We will try to hack on WebGL if the efficiency of current libraries cannot meet our requirement, and even create a better general purpose computing framework on WebGL at the end.
+
+Another challenge is that the pattern of the workload is different from common graph algorithms. The graph layout algorithms need a lot of iterations before converge. In each iteration, each node will need to get the position and strength of other nodes. Different from a lot of graph algorithms, a node in graph layout algorithms not only needs the data of the adjacent nodes but also need the data of other nodes in the graph. This makes the communication to computation ration higher and makes the optimization more tricky. However, the execution pattern can be less divergent than common graph algorithms.
+
+Another challenge is the huge design space of graph layout algorithms. Instead of optimizing for determining algorithms in the previous assignments (like BFS and Page Rank), there is a huge set of graph layout algorithms. A recent survey paper summarized different behaviors of 19 kinds of two-dimensional graph layout techniques considering performance, graph drawing principles, and size. We need to choose several most suitable algorithms for our platform before parallelizing them.
 
 ## Resouces
 
