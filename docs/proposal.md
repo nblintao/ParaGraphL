@@ -12,13 +12,10 @@ Visualization can help make better sense of the underlying information for graph
 
 ![](https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Visualization_of_wiki_structure_using_prefuse_visualization_package.png/600px-Visualization_of_wiki_structure_using_prefuse_visualization_package.png)
 
-It is a common desire of data scientists and some artists to visualize, interact, and analyze large-scale graphs on a web platform. Honestly, running on browsers with JavaScript is not the most efficient platform to calculate the layout of large graphs, considering some great graph visualization software like [Gephi](https://gephi.org/). But browsers is a popular visualization platform because of the cost of deployment and maintenance and other business and engineering reasons ([Why in the browser?](http://slides.com/nicolasjoseph/largescalevis#/5)). It would be fascinating if an end user could visualize and interactive with large-scale graphs by simply opening a web page without any installment or configuration.
-
-
 ## The Challenge
 The graph layout algorithm could be considered as an iterative graph algorithm which needs a lot of communications between nodes, for which CUDA or GraphLab could be used to optimize parallelization and synchronization. The greatest challenge is that there is no standard general purpose parallel programming model (like CUDA) in web platforms.
 
-[WebGL](https://en.wikipedia.org/wiki/WebGL) is a JavaScript API for rendering 3D graphics with GPUs in modern browsers, but it only supports the interfaces for computer graphics. We will try to use WebGL as a general purpose computing engine, with the help of libraries like [turbo.js](https://turbo.github.io/) and [gpgpu.js](https://github.com/amoffat/gpgpu.js). The basic idea of these libraries is to map a thread to a pixel, and then use [GLSL](https://en.wikipedia.org/wiki/OpenGL_Shading_Language) (OpenGL Shading Language) to describe the operations for each thread. These libraries have every simple abstractions and interface and thus may not get enough performance as raw WebGL. We will try to hack on WebGL if the efficiency of current libraries cannot meet our requirement, and even create a better general purpose computing framework on WebGL at the end.
+[WebGL](https://en.wikipedia.org/wiki/WebGL) is a JavaScript API for rendering 3D graphics with GPUs in modern browsers, but it only supports the interfaces for computer graphics. We will try to use WebGL as a general purpose computing engine, with the help of libraries like [turbo.js](https://turbo.github.io/) and [gpgpu.js](https://github.com/amoffat/gpgpu.js). The basic idea of these libraries is to map a thread to a pixel, and then use [GLSL](https://en.wikipedia.org/wiki/OpenGL_Shading_Language) (OpenGL Shading Language) to describe the operations for each thread. These libraries have every simple abstractions and interface and thus may not get enough performance as raw WebGL.
 
 Another challenge is that the pattern of the workload is different from common graph algorithms. The graph layout algorithms need a lot of iterations before converge. In each iteration, each node will need to get the position and strength of other nodes. Different from a lot of graph algorithms, a node in graph layout algorithms not only needs the data of the adjacent nodes but also need the data of other nodes in the graph. This makes the communication to computation ration higher and makes the optimization more tricky. However, the execution pattern can be less divergent than common graph algorithms.
 
@@ -55,12 +52,17 @@ Finish GPU implementations of different graph layout algorithms, compare the per
 
 ### Hope to Achive
 
+We will try to hack on WebGL if the efficiency of current libraries cannot meet our requirement, and even create a better general purpose computing framework on WebGL at the end.
+
+
 ### Demo
 We will show the webpage that utilize our library to generate layouts for large graphs, and we will also show the speedup graph of our library comparing with other CPU libraries.
 
 ## Platform Choice
 
-We will code in GSLS, since it is suitable for developing a library for graphics related work.
+It is a common desire of data scientists and some artists to visualize, interact, and analyze large-scale graphs on a web platform. Honestly, running on browsers with JavaScript is not the most efficient platform to calculate the layout of large graphs, considering some great graph visualization software like [Gephi](https://gephi.org/). But browsers is a popular visualization platform because of the cost of deployment and maintenance and other business and engineering reasons ([Why in the browser?](http://slides.com/nicolasjoseph/largescalevis#/5)). It would be fascinating if an end user could visualize and interactive with large-scale graphs by simply opening a web page without any installment or configuration.
+
+The core part of our code is going to be writtern in GSLS, which could be integrated with WebGL to better utilze GPUs.
 
 ## Schedule
 
