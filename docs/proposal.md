@@ -1,6 +1,6 @@
 # ParaGraphL Proposal
 ## Contibutors
-- Tao Lin (<tao.lin@cs.cmu.edu>)
+- Tao Lin (<tlin2@andrew.cmu.edu>)
 - Bowei Chen (<boweic@andrew.cmu.edu>)
 
 ## Summary
