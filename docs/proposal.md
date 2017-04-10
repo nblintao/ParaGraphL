@@ -5,7 +5,7 @@
 
 ## Summary
 
-We are going to utilize GPU to accelerate several large graph layout algorithms using GLSL, and finally produce a javascript library.
+We are going to impelement a JavaScript framwork for calculating the layout for large-scale graphs in the web platform. This framework will utize GPUs as the main computation resources by impelementing graph layout alogrithms in WebGL and GLSL.
 
 ## Background
 Visualization can help make better sense of the underlying information for graph data like social networks. Layout is an essential part of visulization. A good layout algorithm will project the nodes in the graph into a 2-D plane, and the distance between two nodes in that plane should indicate the connection strength between them. [Force-directed graph](https://en.wikipedia.org/wiki/Force-directed_graph_drawing) is a popular class of graph layout algorithms. This is a visualization of links between pages on a wiki using a force-directed layout (from WikiPedia):
