@@ -1,1 +1,3 @@
 data/*_auto.js
+third_party/*
+!third_party/download.sh
