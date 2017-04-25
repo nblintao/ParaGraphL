@@ -3,3 +3,5 @@
 - Bowei Chen (<boweic@andrew.cmu.edu>)
 
 ## [Proposal](https://nblintao.github.io/ParaGraphL/proposal)
+
+## [Checkpoint](https://nblintao.github.io/ParaGraphL/checkpoint)
