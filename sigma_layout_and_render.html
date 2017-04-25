@@ -5,6 +5,7 @@
 <script src="third_party/sigma.js/build/plugins/sigma.layout.forceAtlas2.min.js"></script>
 <script src="third_party/sigma.js/build/plugins/sigma.layout.noverlap.min.js"></script>
 <script src="third_party/sigma.js/build/plugins/sigma.plugins.animate.min.js"></script>
+<script src="sigma.layout.fruchtermanReingold.js"></script>
 <script src="data/grqc_auto.js"></script>
 
 <div id="container">
@@ -32,9 +33,15 @@
       z-index: 1;
       font-family: sans-serif;
     }
+
+    #timing {
+      left: 0px;
+      position: fixed;
+    }
   </style>
   <div id="webgl">
   <button id="layout" type="button">Layout</button>
+  <p id="timing"></p>
   </div>
 </div>
 
@@ -84,20 +91,42 @@ graph.links.map(function(d, t) {
 s.refresh();
 
 
+// var force = false;
+// document.getElementById('layout').onclick = function() {
+//   if (!force) {
+//     console.log('Start layout');
+//      s.startForceAtlas2({slowDown: 10});
+//   }
+//   else {
+//     console.log('Stop layout');
+//     s.stopForceAtlas2();
+//   }
 
-var force = false;
-document.getElementById('layout').onclick = function() {
-  if (!force) {
-    console.log('Start layout');
-     s.startForceAtlas2({slowDown: 10});
+//   force = !force;
+// };
+
+
+// Start the algorithm:
+var config = {
+  iterations: 1000
+};
+var listener = sigma.layouts.fruchtermanReingold.configure(s, config);
+// Bind all events:
+var start_time;
+listener.bind('start stop interpolate', function(event) {
+  console.log(event.type);
+  if (event.type == 'start') {
+    start_time = performance.now();
   }
   else {
-    console.log('Stop layout');
-    s.stopForceAtlas2();
+    var end_time = performance.now();
+    var duration = end_time - start_time;
+    console.log(duration);
+    document.getElementById('timing').innerText = duration + ' ms';
   }
+});
 
-  force = !force;
-};
+sigma.layouts.fruchtermanReingold.start(s);
 
 </script>
 
