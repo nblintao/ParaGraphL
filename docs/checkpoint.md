@@ -56,5 +56,8 @@ As shown in the figure, the execution time increases linearly with the number of
 
 We believe that our GPU implementation will get decent speedup for two reasons. Firstly, computing the forces between vertices and updating the speed can be parallelized. Moreover, we can optimize the algorithm by applying a Quad-Tree to get even better performance.
 
+Fruchterman-Reingold Layout with sigma.js:
+![](https://raw.githubusercontent.com/nblintao/ParaGraphL/master/docs/graph_layout.png "Graph Layout")
+
 ## Issues
 It can be tricky to control the workload. If we are going to design and optimize for another more complex layout algorithm, the workload might be too large to finish elegantly. If not, the workload may be not large enough to get us into selected presentations.
