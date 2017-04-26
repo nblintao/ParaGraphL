@@ -29,11 +29,23 @@ Integreted three force-directed layout algorithms for reference:
 - [Fruchterman-Reingold layout with sigma.js framework](https://github.com/Linkurious/linkurious.js/tree/master/plugins/sigma.layouts.fruchtermanReingold)
 
 ## Goals
+We still believe we will be able to produce all our deliverables. For the "nice to haves" goals, we still believe we can hack more aggressive optimizations to exploit the parallel ability of GPUs. But it is less likely to create a new GPGPU libraries for WebGL computations because our design is not that general, and we would like to put our effort into making a specific task (i.e. layout) better.
 
-Describe how you are doing with respect to the goals and deliverables stated in your proposal. Do you still believe you will be able to produce all your deliverables? If not, why? What about the "nice to haves"? In your checkpoint writeup we want a new list of goals that you plan to hit for the Parallelism competition.
+### Plan to Achieve
+
+At the beginning, we will implement a test harness and baseline reference. The baseline reference can be visualizing large graphs with [D3](https://d3js.org/), a popular JavaScript library for visualization.
+
+Then, we will design and/or implement several graph layout algorithms with GLSL, and then test and optimize them using the harness above. Some great graph layout algorithms are have never been implemented in parallel before, while others may be designed for parallel computing but have different tradeoff from our platform, which meaning there is a large design space and need to be well tuned.
+
+We will also optimize for other parts of the framework other than layout. One important thing is to speed up the rendering because this can be a bottleneck after speeding up layout calculations. We also need to improve the user interfaces and documents of our framework.
+
+### Hope to Achieve
+Current GPGPU libraries for WebGL have every simple abstractions and interface and thus may not produce enough performance as raw WebGL.
+
+We will try to hack more aggressive optimizations to exploit the parallel ability of GPUs if the efficiency of current libraries cannot meet our requirement. This may speed up our layout algorithms further more.
 
 ## Deliverables
-What do you plan to show at the parallelism competition? Will it be a demo? Will it be a graph?
+In the demo, we will show a webpage that visualizes large-scale graphs with our library (several different layout algorithms can be chosen), and then compare it with popular visualization libraries which do not utilize GPUs. We will also show a speedup graph of our library compared to other popular libraries.
 
 ## Preliminary Results
 
