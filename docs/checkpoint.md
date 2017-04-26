@@ -23,7 +23,7 @@ Improve the user interfaces and documents of our framework.
 ## Work Completed
 Implemented a graph generator which samples from a large real word graph. Build pages to visualize the layout of the graph. Implemented the timing logic to measure the performance of different algorithms and implementations.
 
-Integreted three force-directed layout algorithms for reference:
+Integreted three force-directed layout algorithms as baseline and comparison:
 - [Velocity Verlet integration layout with d3.js framework](https://github.com/d3/d3-force)
 - [ForceAtlas2 layout with sigma.js framework](https://github.com/jacomyal/sigma.js/tree/master/plugins/sigma.layout.forceAtlas2)
 - [Fruchterman-Reingold layout with sigma.js framework](https://github.com/Linkurious/linkurious.js/tree/master/plugins/sigma.layouts.fruchtermanReingold)
