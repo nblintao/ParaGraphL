@@ -1,5 +1,5 @@
 ---
-title: ParaGraphL Checkpoint
+title: ParaGraphL Proposal
 ---
 
 # ParaGraphL Proposal
