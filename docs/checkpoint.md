@@ -38,7 +38,7 @@ What do you plan to show at the parallelism competition? Will it be a demo? Will
 ## Preliminary Results
 
 We test the execution time of the baseline implementation on a MacBook with a 1.3GHz dual-core Intel Core m7 processor. We run 100, 200, 300, 400 and 500 iterations of the baseline algorithm on three synthetic graphs, the smallest graph has 2534 vertices and 7000 edges, the medium size graph has 4164 vertices and 15000 edges and the largest graph with 5254 vertices and  28980 edges. The result is shown in the following figure:
-![](https://github.com/nblintao/ParaGraphL/docs/baseline_benchmark.png "Baseline Benchmark")
+![](https://github.com/nblintao/ParaGraphL/blob/master/docs/baseline_benchmark.png "Baseline Benchmark")
 
 As shown in the figure, the execution time increases linearly with the number of iterations. But the algorithm runs much slower as the size of the graph grows. We conclude that this is because when computing repulsion force, we need to iterate over each pair of the vertices, resulting in a quadratic time algorithm.
 
