@@ -37,9 +37,11 @@ What do you plan to show at the parallelism competition? Will it be a demo? Will
 
 ## Preliminary Results
 
-We test the execution time of the baseline implementation on a MacBook with a 1.3GHz dual-core Intel Core m7 processor. We run 100, 200, 300, 400 and 500 iterations of the baseline algorithm on three graphs, each with 5242 vertices and 7000, 15000, 28980 edges. The result is shown in the following figure:
+We test the execution time of the baseline implementation on a MacBook with a 1.3GHz dual-core Intel Core m7 processor. We run 100, 200, 300, 400 and 500 iterations of the baseline algorithm on three synthetic graphs, the smallest graph has 2534 vertices and 7000 edges, the medium size graph has 4164 vertices and 15000 edges and the largest graph with 5254 vertices and  28980 edges. The result is shown in the following figure:
 
-As shown in the figure, the execution time increases linearly with the number of iterations. But the algorithm runs much slower on a dense graph than a relatively sparse graph. We conclude that this is because we need to iterate through each edge to compute the attraction force of the vertices and this is the most time-consuming part of the computation. We also find that this part can be parallelized, so we believe that our GPU implementation will have a decent speedup.
+As shown in the figure, the execution time increases linearly with the number of iterations. But the algorithm runs much slower as the size of the graph grows. We conclude that this is because when computing repulsion force, we need to iterate over each pair of the vertices, resulting in a quadratic time algorithm.
+
+We believe that our GPU implementation will get decent speedup for two reasons. Firstly, computing the forces between vertices and updating the speed can be parallelized. Moreover, we can optimize the algorithm by applying a Quad-Tree to get even better performance.
 
 ## Issues
 It can be tricky to control the workload. If we are going to design and optimize for another more complex layout algorithm, the workload might be too large to finish elegantly. If not, the workload may be not large enough to get us into selected presentations.
