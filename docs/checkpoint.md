@@ -21,7 +21,12 @@ Optimize for other parts of the framework other than layout. One important thing
 Improve the user interfaces and documents of our framework.
 
 ## Work Completed
-One to two paragraphs, summarize the work that you have completed so far. (This should be easy if you have been maintaining this information on your project page.)
+Implemented a graph generator which samples from a large real word graph. Build pages to visualize the layout of the graph. Implemented the timing logic to measure the performance of different algorithms and implementations.
+
+Integreted three force-directed layout algorithms for reference:
+- [Velocity Verlet integration layout with d3.js framework](https://github.com/d3/d3-force)
+- [ForceAtlas2 layout with sigma.js framework](https://github.com/jacomyal/sigma.js/tree/master/plugins/sigma.layout.forceAtlas2)
+- [Fruchterman-Reingold layout with sigma.js framework](https://github.com/Linkurious/linkurious.js/tree/master/plugins/sigma.layouts.fruchtermanReingold)
 
 ## Goals
 
@@ -32,9 +37,9 @@ What do you plan to show at the parallelism competition? Will it be a demo? Will
 
 ## Preliminary Results
 
-We test the execution time of the baseline implementation on a Macbook with a 1.3GHz dual-core Intel Core m7 processor. We run 100, 200, 300, 400 and 500 iterations of the baseline algorithm on three graphs, each with 5242 vertices and 7000, 15000, 28980 edges. The result is shown in the following figure:
+We test the execution time of the baseline implementation on a MacBook with a 1.3GHz dual-core Intel Core m7 processor. We run 100, 200, 300, 400 and 500 iterations of the baseline algorithm on three graphs, each with 5242 vertices and 7000, 15000, 28980 edges. The result is shown in the following figure:
 
-As shown in the figure, the execution time increases linearly with the number of iterations. But the algorithm runs much slower on a dense graph than a relatively sparse graph. We conclude that this is because we need to iterate through each edge to compute the attraction force of the vertices and this is the most time consuming part in the computation. We also find that this part can be parallelized, so we believe that our GPU implementation will have decent speedup.
+As shown in the figure, the execution time increases linearly with the number of iterations. But the algorithm runs much slower on a dense graph than a relatively sparse graph. We conclude that this is because we need to iterate through each edge to compute the attraction force of the vertices and this is the most time-consuming part of the computation. We also find that this part can be parallelized, so we believe that our GPU implementation will have a decent speedup.
 
 ## Issues
-List the issues that concern you the most. Are there any remaining unknowns (things you simply don't know how to solve, or resource you don't know how to get) or is it just a matter of coding and doing the work? If you do not wish to put this information on a public web site you are welcome to email the staff directly.
+It can be tricky to control the workload. If we are going to design and optimize for another more complex layout algorithm, the workload might be too large to finish elegantly. If not, the workload may be not large enough to get us into selected presentations.
