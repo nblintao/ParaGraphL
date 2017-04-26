@@ -9,7 +9,16 @@ title: ParaGraphL Checkpoint
 
 ## Detailed Schedule
 
-Make sure your project schedule on your main project page is up to date with work completed so far, and well as with a revised plan of work for the coming weeks. As by this time you should have a good understanding of what is required to complete your project, I want to see a very detailed schedule for the coming weeks. I suggest breaking time down into half-week increments. Each increment should have at least one task, and for each task put a person's name on it.
+### 04/24 - 04/27
+Benchmark on the efficiency of Fruchterman-Reingold layout algorithm. Familiar with the implementation of this algorithm.
+### 04/28 - 04/30
+Implement parallelized Fruchterman-Reingold layout algorithms with GLSL, and then test and compare with the one without being parallelized.
+### 05/01 - 05/04
+Hack more aggressive optimizations to exploit the parallel ability of GPUs. Or try to design and implement other graph layout algorithms suitable for the features of WebGL and GLSL.
+### 05/05 - 05/07
+Optimize for other parts of the framework other than layout. One important thing is to speed up the rendering because this can be a bottleneck after speeding up layout calculations.
+### 05/08 - 05/11
+Improve the user interfaces and documents of our framework.
 
 ## Work Completed
 One to two paragraphs, summarize the work that you have completed so far. (This should be easy if you have been maintaining this information on your project page.)
