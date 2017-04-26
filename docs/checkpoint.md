@@ -1,6 +1,7 @@
 ---
 title: Checkpoint
 ---
+
 # ParaGraphL Checkpoint
 ## Contibutors
 - Tao Lin (<tlin2@andrew.cmu.edu>)
@@ -14,6 +15,7 @@ Make sure your project schedule on your main project page is up to date with wor
 One to two paragraphs, summarize the work that you have completed so far. (This should be easy if you have been maintaining this information on your project page.)
 
 ## Goals
+
 Describe how you are doing with respect to the goals and deliverables stated in your proposal. Do you still believe you will be able to produce all your deliverables? If not, why? What about the "nice to haves"? In your checkpoint writeup we want a new list of goals that you plan to hit for the Parallelism competition.
 
 ## Deliverables
