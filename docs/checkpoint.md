@@ -1,5 +1,5 @@
 ---
-title: Checkpoint
+title: ParaGraphL Checkpoint
 ---
 
 # ParaGraphL Checkpoint

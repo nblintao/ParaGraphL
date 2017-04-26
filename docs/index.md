@@ -1,3 +1,7 @@
+---
+title: ParaGraphL
+---
+
 ## Contibutors
 - Tao Lin (<tlin2@andrew.cmu.edu>)
 - Bowei Chen (<boweic@andrew.cmu.edu>)

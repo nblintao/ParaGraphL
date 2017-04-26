@@ -1,3 +1,7 @@
+---
+title: ParaGraphL Checkpoint
+---
+
 # ParaGraphL Proposal
 ## Contibutors
 - Tao Lin (<tlin2@andrew.cmu.edu>)
