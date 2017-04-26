@@ -22,7 +22,10 @@ Describe how you are doing with respect to the goals and deliverables stated in 
 What do you plan to show at the parallelism competition? Will it be a demo? Will it be a graph?
 
 ## Preliminary Results
-Do you have preliminary results at this time? If so, it would be great to included them in your checkpoint write-up.
+
+We test the execution time of the baseline implementation on a Macbook with a 1.3GHz dual-core Intel Core m7 processor. We run 100, 200, 300, 400 and 500 iterations of the baseline algorithm on three graphs, each with 5242 vertices and 7000, 15000, 28980 edges. The result is shown in the following figure:
+
+As shown in the figure, the execution time increases linearly with the number of iterations. But the algorithm runs much slower on a dense graph than a relatively sparse graph. We conclude that this is because we need to iterate through each edge to compute the attraction force of the vertices and this is the most time consuming part in the computation. We also find that this part can be parallelized, so we believe that our GPU implementation will have decent speedup.
 
 ## Issues
 List the issues that concern you the most. Are there any remaining unknowns (things you simply don't know how to solve, or resource you don't know how to get) or is it just a matter of coding and doing the work? If you do not wish to put this information on a public web site you are welcome to email the staff directly.
