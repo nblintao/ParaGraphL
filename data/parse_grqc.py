@@ -22,3 +22,5 @@ with file('ca-GrQc.txt', 'r') as text:
     with file('grqc_auto.js', 'w') as out:
         out.write(output)
 
+    print len(nodes)
+
