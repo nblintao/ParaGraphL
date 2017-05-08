@@ -108,8 +108,10 @@ s.refresh();
 
 // Start the algorithm:
 var config = {
-  iterations: 2500
+  iterations: 1
 };
+var duration = 0.0;
+var iters = 50;
 var listener = sigma.layouts.fruchtermanReingold.configure(s, config);
 // Bind all events:
 var start_time;
@@ -120,13 +122,17 @@ listener.bind('start stop interpolate', function(event) {
   }
   else {
     var end_time = performance.now();
-    var duration = end_time - start_time;
+    duration += end_time - start_time;
     console.log(duration);
-    document.getElementById('timing').innerText = duration + ' ms';
   }
 });
 
-sigma.layouts.fruchtermanReingold.start(s);
+for (i = 0; i < iters; ++i) {
+  sigma.layouts.fruchtermanReingold.start(s);
+}
+
+document.getElementById('timing').innerText = duration + ' ms';
+
 
 </script>
 
