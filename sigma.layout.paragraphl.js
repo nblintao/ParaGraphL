@@ -1,5 +1,7 @@
 ;(function(undefined) {
 
+  'use strict';
+
   if (typeof sigma == 'undefined')
     throw new Error('sigma is not declared');
 
@@ -18,22 +20,56 @@
 
   function ParagraphL() {
     var self = this;
+    
+    var settings = {
+      autoArea : true,
+      area : 1,
+      gravity : 10,
+      speed : 0.1,
+      iterations : 1000
+    };
 
-    // Configuration
     this.init = function (sigInst, options) {
+      options = options || {};
+
+      // Properties
+      this.sigInst = sigInst;
+      this.config = sigma.utils.extend(options, settings);
 
     };
 
-    // Layout algorithm implementation
-    this.singleStep = function () {
-
-    };
-
-    // Start the layout algorithm 
     this.start = function() {
-
+      _eventEmitter[self.sigInst.id].dispatchEvent('start');
+      
     };
+  };
 
-  }
+  // Configuration
+  sigma.layouts.paragraphl.configure = function (sigInst, config) {
+    if (!sigInst) throw new Error('Missing argument : "sigInst"');
+    if (!config) throw new Error('Missing argument : "config"');
+
+    if (!_instance[sigInst.id]) {
+      _instance[ingInst.id] = new ParagraphL();
+      _eventEmitter[sigInst.id] = {};
+      sigma.classes.dispatcher.extend(_eventEmitter[sigInst.id]);
+
+    }
+
+    _instance[sigInst.id].init(sigInst, config);
+
+    return _eventEmitter[sigInst.id];
+  };
+
+
+  // Start the layout algorithm 
+  sigma.layouts.paragraphl.start = function(sigInst) {
+    if (!sigInst) throw new Error('Missing argument : "sigInst""');
+    
+    _instance[sigInst.id].start();
+
+    return _eventEmitter[sigInst.id];
+  };
+
   
 }).call(this);
