@@ -3,6 +3,12 @@
   if (typeof sigma == 'undefined')
     throw new Error('sigma is not declared');
 
+  if (typeof turbojs == 'undefined') {
+    throw new Error('turbo is not declared');
+  } else {
+    console.log('turbo.js installed');
+  }
+
   // Initialize : 
   sigma.utils.pkg('sigma.layouts.paragraphl');
 
