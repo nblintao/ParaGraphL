@@ -66,7 +66,6 @@
      * Single layout iteration.
      */
   /*  this.atomicGo = function () {
-      if (!this.running || this.iterCount < 1) return false;
 
           i,
           j,
@@ -78,10 +77,6 @@
           dist,
           repulsiveF,
 
-
-
-      this.iterCount--;
-      this.running = (this.iterCount > 0);
 
       for (i = 0; i < nodesCount; i++) {
         n = nodes[i];
@@ -175,7 +170,43 @@
     };
 */
 
+  this.createProgram = function (gl)
+  {
+    var sourceCode = `
+#ifdef GL_FRAGMENT_PRECISION_HIGH
+precision highp float;
+#else
+precision mediump float;
+#endif
+
+uniform sampler2D m;
+varying vec2 vTextureCoord;
+
+void main()
+{
+  float i, j;
+  float value = 0.0;
+  i = vTextureCoord.s;
+  j = vTextureCoord.t;
+  gl_FragColor.r = texture2D(m, vec2(1, j)).r + 0.005;
+  gl_FragColor.g = texture2D(m, vec2(1, j)).g;
+}
+`
+    this.program = gpgpUtility.createProgram(null, sourceCode);
+    this.positionHandle = gpgpUtility.getAttribLocation(program,  "position");
+    gl.enableVertexAttribArray(this.positionHandle);
+    this.textureCoordHandle = gpgpUtility.getAttribLocation(program,  "textureCoord");
+    gl.enableVertexAttribArray(this.textureCoordHandle);
+    this.textureHandle = gl.getUniformLocation(program, "texture");
+
+    return program;
+  };
+
     this.atomicGo = function (input, output) {
+      if (!this.running || this.iterCount < 1) return false;
+      this.iterCount--;
+      this.running = (this.iterCount > 0);
+
       var outputBuffer = gpgpUtility.attachFrameBuffer(output);
 
       gl.useProgram(program);
@@ -183,12 +214,12 @@
       gpgpUtility.getStandardVertices();
 
       // TODO: what?
-      gl.vertexAttribPointer(positionHandle,     3, gl.FLOAT, gl.FALSE, 20, 0);
-      gl.vertexAttribPointer(textureCoordHandle, 2, gl.FLOAT, gl.FALSE, 20, 12);
+      gl.vertexAttribPointer(this.positionHandle,     3, gl.FLOAT, gl.FALSE, 20, 0);
+      gl.vertexAttribPointer(this.textureCoordHandle, 2, gl.FLOAT, gl.FALSE, 20, 12);
 
       gl.activeTexture(gl.TEXTURE0);
       gl.bindTexture(gl.TEXTURE_2D, input);
-      gl.uniform1i(textureHandle, 0);
+      gl.uniform1i(this.textureHandle, 0);
 
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     }
