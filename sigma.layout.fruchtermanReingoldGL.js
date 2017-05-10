@@ -217,7 +217,7 @@ void main()
 
       gl.useProgram(this.program);
 
-      gpgpUtility.getStandardVertices();
+      this.gpgpUtility.getStandardVertices();
 
       // TODO: what?
       gl.vertexAttribPointer(this.positionHandle,     3, gl.FLOAT, gl.FALSE, 20, 0);
@@ -265,6 +265,24 @@ void main()
       return new Float32Array(dataArray);
     };
 
+    this.saveDataToNode = function() {
+      this.texture_output;
+      var nodes = this.sigInst.graph.nodes();
+      var gl = this.gpgpUtility.getGLContext();
+      var nodesCount = nodes.length;
+      var output_arr = new Float32Array(nodesCount * 4);
+      gl.readPixels(0, 0, nodesCount * 4, 1, gl.RGBA, gl.FLOAT, output_arr);
+
+      console.log(output_arr);
+      var nodes = this.sigInst.graph.nodes();
+      for (i = 0; i < nodesCount; ++i) {
+        var n = nodes[i];
+        n.x = output_arr[4 * i];
+        n.y = output_arr[4 * i + 1];
+      }
+      
+    }
+
     this.setupGo = function () {
       this.iterCount = this.config.iterations;
 
@@ -280,7 +298,7 @@ void main()
       var gpgpUtility = new vizit.utility.GPGPUtility(textureSize, 1, {premultipliedAlpha:false});
       this.gpgpUtility = gpgpUtility;
 
-      if (!gpgpUtility.isFloatingTexture()) {
+      if (!this.gpgpUtility.isFloatingTexture()) {
         alert("Floating point textures are not supported.");
         return false;
       }
@@ -293,8 +311,8 @@ void main()
       this.texture_output = gpgpUtility.makeTexture(WebGLRenderingContext.FLOAT, data);
 
       // Check if frame buffer works
-      var framebuffer  = gpgpUtility.attachFrameBuffer(this.texture_output);
-      var bufferStatus = gpgpUtility.frameBufferIsComplete();
+      var framebuffer  = this.gpgpUtility.attachFrameBuffer(this.texture_output);
+      var bufferStatus = this.gpgpUtility.frameBufferIsComplete();
       if (!bufferStatus.isComplete) {
         alert(bufferStatus.message);
         return false;
@@ -307,13 +325,13 @@ void main()
       if (!this.setupGo()) {
         return;
       }
-      while (this.running) {
-        var tmp = this.texture_input;
-        this.texture_input = this.texture_output;
-        this.texture_output = tmp;
-        this.atomicGo(this.texture_input, this.texture_output);
-      };
-
+      // while (this.running) {
+      //   var tmp = this.texture_input;
+      //   this.texture_input = this.texture_output;
+      //   this.texture_output = tmp;
+      //   this.atomicGo(this.texture_input, this.texture_output);
+      // };
+      this.saveDataToNode();
       this.stop();
     };
 
