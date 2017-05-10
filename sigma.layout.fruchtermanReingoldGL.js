@@ -62,113 +62,6 @@
       this.running = false;
     };
 
-    /**
-     * Single layout iteration.
-     */
-  /*  this.atomicGo = function () {
-
-          i,
-          j,
-          n,
-          n2,
-          e,
-          xDist,
-          yDist,
-          dist,
-          repulsiveF,
-
-
-      for (i = 0; i < nodesCount; i++) {
-        n = nodes[i];
-
-        // Init
-        if (!n.fr) {
-          n.fr_x = n.x;
-          n.fr_y = n.y;
-          n.fr = {
-            dx: 0,
-            dy: 0
-          };
-        }
-
-        for (j = 0; j < nodesCount; j++) {
-          n2 = nodes[j];
-
-          // Repulsion force
-          if (n.id != n2.id) {
-            xDist = n.fr_x - n2.fr_x;
-            yDist = n.fr_y - n2.fr_y;
-            dist = Math.sqrt(xDist * xDist + yDist * yDist) + 0.01;
-            // var dist = Math.sqrt(xDist * xDist + yDist * yDist) - n1.size - n2.size;
-
-            if (dist > 0) {
-              repulsiveF = k * k / dist;
-              n.fr.dx += xDist / dist * repulsiveF;
-              n.fr.dy += yDist / dist * repulsiveF;
-            }
-          }
-        }
-      }
-
-      var nSource,
-          nTarget,
-          attractiveF;
-
-      for (i = 0; i < edgesCount; i++) {
-        e = edges[i];
-
-        // Attraction force
-        nSource = self.sigInst.graph.nodes(e.source);
-        nTarget = self.sigInst.graph.nodes(e.target);
-
-        xDist = nSource.fr_x - nTarget.fr_x;
-        yDist = nSource.fr_y - nTarget.fr_y;
-        dist = Math.sqrt(xDist * xDist + yDist * yDist) + 0.01;
-        // dist = Math.sqrt(xDist * xDist + yDist * yDist) - nSource.size - nTarget.size;
-        attractiveF = dist * dist / k;
-
-        if (dist > 0) {
-          nSource.fr.dx -= xDist / dist * attractiveF;
-          nSource.fr.dy -= yDist / dist * attractiveF;
-          nTarget.fr.dx += xDist / dist * attractiveF;
-          nTarget.fr.dy += yDist / dist * attractiveF;
-        }
-      }
-
-      var d,
-          gf,
-          limitedDist;
-
-      for (i = 0; i < nodesCount; i++) {
-        n = nodes[i];
-
-        // Gravity
-        d = Math.sqrt(n.fr_x * n.fr_x + n.fr_y * n.fr_y);
-        gf = 0.01 * k * self.config.gravity * d;
-        n.fr.dx -= gf * n.fr_x / d;
-        n.fr.dy -= gf * n.fr_y / d;
-
-        // Speed
-        n.fr.dx *= self.config.speed;
-        n.fr.dy *= self.config.speed;
-
-        // Apply computed displacement
-        if (!n.fixed) {
-          xDist = n.fr.dx;
-          yDist = n.fr.dy;
-          dist = Math.sqrt(xDist * xDist + yDist * yDist);
-
-          if (dist > 0) {
-            limitedDist = Math.min(maxDisplace * self.config.speed, dist);
-            n.fr_x += xDist / dist * limitedDist;
-            n.fr_y += yDist / dist * limitedDist;
-          }
-        }
-      }
-
-      return this.running;
-    };
-*/
 
   this.createProgram = function ()
   {
@@ -181,20 +74,81 @@ precision highp float;
 #else
 precision mediump float;
 #endif
-
 uniform sampler2D m;
 varying vec2 vTextureCoord;
-
 void main()
 {
-  float i, j;
+  float xDist, yDist, dist, repulsiveF, attractiveF, node_j_id, d, gf, limitedDist;
+  int i;
+  float dx = 0.0, dy = 0.0;
+  vec4 node_i, node_j;
   float value = 0.0;
-  i = vTextureCoord.s;
-  j = vTextureCoord.t;
-  gl_FragColor.r = texture2D(m, vec2(i, 1)).r / 2.0;
-  gl_FragColor.g = texture2D(m, vec2(i, 1)).g;
+  i = int(vTextureCoord.s);
+
+  node_i = texture2D(m, vec2(i, 1));
+
+  for (int j = 0; j < ` + this.nodesCount.toString() + `; j++) {
+    if (i != j) {
+      node_j = texture2D(m, vec2(j, 1));
+
+      xDist = node_i.r - node_j.r;
+      yDist = node_i.g - node_j.g;
+      dist = sqrt(xDist * xDist + yDist * yDist) + 0.01;
+
+      if (dist > 0.0) {
+        repulsiveF = ` + this.k_2.toString() + ` / dist;
+        dx += xDist / dist * repulsiveF;
+        dy += yDist / dist * repulsiveF;
+      }
+    }
+  }
+
+  int offset = int(node_i.b);
+  int length = int(node_i.a);
+  int end = offset + length;
+  for (int p = 0; p < `+ String(this.maxEdgePerVetex) +`; p++) {
+    if (p >= length) break;
+    int t = offset + p;
+    node_j_id = texture2D(m, vec2(t, 1)).r;
+    node_j = texture2D(m, vec2(node_j_id, 1));
+
+    xDist = node_i.r - node_j.r;
+    yDist = node_i.g - node_j.g;
+    dist = sqrt(xDist * xDist + yDist * yDist) + 0.01;
+
+    attractiveF = dist * dist / ` + this.k + `;
+
+    if (dist > 0.0) {
+      dx -= xDist / dist * attractiveF;
+      dy -= yDist / dist * attractiveF;
+      dx += xDist / dist * attractiveF;
+      dy += yDist / dist * attractiveF;
+    }
+  }
+
+  // Gravity
+  d = sqrt(node_i.r * node_i.r + node_i.g * node_i.g);
+  gf = ` + String(0.01 * this.k * self.config.gravity) + ` * d;
+  dx -= gf * node_i.r / d;
+  dy -= gf * node_i.g / d;
+
+  // Speed
+  dx *= ` + String(self.config.speed) + `;
+  dy *= ` + String(self.config.speed) + `;
+
+  // Apply computed displacement
+  xDist = dx;
+  yDist = dy;
+  dist = sqrt(xDist * xDist + yDist * yDist);
+
+  if (dist > 0.0) {
+    limitedDist = min(` + String(this.maxDisplace * self.config.speed) + `, dist);
+    gl_FragColor.r = node_i.r + xDist / dist * limitedDist;
+    gl_FragColor.g = node_i.g + yDist / dist * limitedDist;
+  }
 }
 `
+    console.log(sourceCode);
     var program = gpgpUtility.createProgram(null, sourceCode);
     this.positionHandle = gpgpUtility.getAttribLocation(program,  "position");
     gl.enableVertexAttribArray(this.positionHandle);
@@ -249,11 +203,13 @@ void main()
         nodeDict[mapIdPos[e.target]].push(e.source);
       }
 
+      this.maxEdgePerVetex = 0;
       for (i = 0; i < nodesCount; i++) {
         var offset = dataArray.length;
         var dests = nodeDict[i];
         dataArray[i * 4 + 2] = offset;
         dataArray[i * 4 + 3] = dests.length;
+        this.maxEdgePerVetex = Math.max(this.maxEdgePerVetex, dests.length);
         for (var dest in dests) {
           dataArray.push(dest);
           dataArray.push(0);
@@ -289,10 +245,12 @@ void main()
       var nodes = this.sigInst.graph.nodes();
       var edges = this.sigInst.graph.edges();
       var nodesCount = nodes.length;
+      this.nodesCount = nodesCount;
       var edgesCount = edges.length;
       this.config.area = this.config.autoArea ? (nodesCount * nodesCount) : this.config.area;
-      var maxDisplace = Math.sqrt(this.config.area) / 10;
-      var k = Math.sqrt(this.config.area / (1 + nodesCount));
+      this.maxDisplace = Math.sqrt(this.config.area) / 10;
+      this.k_2 = this.config.area / (1 + nodesCount);
+      this.k =  Math.sqrt(this.k_2);
 
       var textureSize = nodesCount + edgesCount * 2;
       var gpgpUtility = new vizit.utility.GPGPUtility(textureSize, 1, {premultipliedAlpha:false});
@@ -304,11 +262,12 @@ void main()
       }
 
       this.gl = gpgpUtility.getGLContext();
-      this.createProgram();
 
       var data = this.buildTextureData(nodes, edges, nodesCount, edgesCount);
       this.texture_input = gpgpUtility.makeTexture(WebGLRenderingContext.FLOAT, data);
       this.texture_output = gpgpUtility.makeTexture(WebGLRenderingContext.FLOAT, data);
+
+      this.createProgram();
 
       // Check if frame buffer works
       var framebuffer  = this.gpgpUtility.attachFrameBuffer(this.texture_output);
