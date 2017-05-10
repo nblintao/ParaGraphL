@@ -105,9 +105,7 @@ void main()
   }
 
   int offset = int(node_i.b);
-  gl_FragColor.b = float(offset);
   int length = int(node_i.a);
-  gl_FragColor.a = float(length);
   int end = offset + length;
   for (int p = 0; p < `+ String(this.maxEdgePerVetex) +`; p++) {
     if (p >= length) break;
@@ -286,6 +284,7 @@ void main()
       if (!this.setupGo()) {
         return;
       }
+      console.log(this.iterCount);
       while (this.running) {
         var tmp = this.texture_input;
         this.texture_input = this.texture_output;
@@ -412,7 +411,8 @@ void main()
   sigma.layouts.fruchtermanReingoldGL.configure = function(sigInst, config) {
     if (!sigInst) throw new Error('Missing argument: "sigInst"');
     if (!config) throw new Error('Missing argument: "config"');
-
+    
+    console.log(this.iterCount);
     // Create instance if undefined
     if (!_instance[sigInst.id]) {
       _instance[sigInst.id] = new FruchtermanReingoldGL();

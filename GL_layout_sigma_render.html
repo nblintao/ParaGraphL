@@ -36,16 +36,30 @@
     font-family: sans-serif;
   }
 
-  #timing {
+  #MaxTime {
     left: 0px;
+    top: 20px;
     position: fixed;
   }
+  #MinTime {
+    left: 0px;
+    top: 40px;
+    position: fixed;
+  }
+  #AvgTime {
+    left : 0px;
+    top: 60px;
+    position : fixed;
+  }
+
 </style>
 
 <div id="container">
   <div id="webgl">
     <button id="layout" type="button">Layout</button>
-    <p id="timing"></p>
+    <p id="MaxTime"></p>
+    <p id="MinTime"></p>
+    <p id="AvgTime"></p>
   </div>
 </div>
 
@@ -72,24 +86,7 @@ s.addRenderer({
   }
 });
 
-graph.nodes.map(function(d){
-  s.graph.addNode({
-    id: d.id,
-    label: 'Node ' + d.id,
-    x: Math.random(),
-    y: Math.random(),
-    size: 1
-  });
-})
 
-graph.links.map(function(d, t) {
-  s.graph.addEdge({
-    id: 'e' + t,
-    source: d.source,
-    target: d.target,
-    size: 1
-  });
-})
 
 
 s.refresh();
@@ -112,14 +109,19 @@ s.refresh();
 
 // Start the algorithm:
 var config = {
-  iterations : 10000
+  iterations : 1000
 };
 
 var duration = 0.0;
-var listener = sigma.layouts.fruchtermanReingoldGL.configure(s, config);
+var loop = 10;
+var i = 0;
+var min_val = 0.0;
+var max_val = 0.0;
+var sum_val = 0.0;
+
 // Bind all events:
 var start_time;
-listener.bind('start stop', function(event) {
+var func = function(event) {
   console.log(event.type);
   if (event.type == 'start') {
     start_time = performance.now();
@@ -127,15 +129,50 @@ listener.bind('start stop', function(event) {
   else {
     var end_time = performance.now();
     duration += end_time - start_time;
-    document.getElementById('timing').innerText = duration + ' ms';
+    if (i === 0) {
+      min_val = duration;
+      max_val = duration;
+      sum_val = duration;
+    } else {
+      min_val = Math.min(min_val, duration);
+      max_val = Math.max(max_val, duration);
+      sum_val += duration;
+    }
     console.log(duration);
   }
-});
+}; 
 
-sigma.layouts.fruchtermanReingoldGL.start(s);
+for (i = 0; i < loop; ++i) { 
+  console.log(i);
+  graph.nodes.map(function(d){
+    s.graph.addNode({
+      id: d.id,
+      label: 'Node ' + d.id,
+      x: Math.random(),
+      y: Math.random(),
+      size: 1
+    });
+  })
 
+  graph.links.map(function(d, t) {
+    s.graph.addEdge({
+      id: 'e' + t,
+      source: d.source,
+      target: d.target,
+      size: 1
+    });
+  })
+  var config = {
+    iterations : 1000
+  };
+  var listener = sigma.layouts.fruchtermanReingoldGL.configure(s, config);
+  listener.bind('start stop', func);
+  sigma.layouts.fruchtermanReingoldGL.start(s);
+}
 
-
+document.getElementById('MaxTime').innerText = max_val + ' ms';
+document.getElementById('MinTime').innerText = min_val + ' ms';
+document.getElementById('AvgTime').innerText = sum_val / loop + ' ms';
 
 </script>
 
