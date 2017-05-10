@@ -83,13 +83,14 @@ void main()
   float dx = 0.0, dy = 0.0;
   vec4 node_i, node_j;
   float value = 0.0;
-  i = int(vTextureCoord.s);
+  i = int(vTextureCoord.s * float(` + this.textureSize + `));
 
-  node_i = texture2D(m, vec2(i, 1));
+  node_i = texture2D(m, vec2(vTextureCoord.s, 1));
+  gl_FragColor.b = node_i.g;
 
   for (int j = 0; j < ` + this.nodesCount.toString() + `; j++) {
     if (i != j) {
-      node_j = texture2D(m, vec2(j, 1));
+      node_j = texture2D(m, vec2(float(j) / float(` + this.textureSize + `) , 1));
 
       xDist = node_i.r - node_j.r;
       yDist = node_i.g - node_j.g;
@@ -109,8 +110,8 @@ void main()
   for (int p = 0; p < `+ String(this.maxEdgePerVetex) +`; p++) {
     if (p >= length) break;
     int t = offset + p;
-    node_j_id = texture2D(m, vec2(t, 1)).r;
-    node_j = texture2D(m, vec2(node_j_id, 1));
+    node_j_id = texture2D(m, vec2(float(t) / float(` + this.textureSize + `) , 1)).r;
+    node_j = texture2D(m, vec2(float(node_j_id) / float(` + this.textureSize + `), 1));
 
     xDist = node_i.r - node_j.r;
     yDist = node_i.g - node_j.g;
@@ -121,8 +122,6 @@ void main()
     if (dist > 0.0) {
       dx -= xDist / dist * attractiveF;
       dy -= yDist / dist * attractiveF;
-      dx += xDist / dist * attractiveF;
-      dy += yDist / dist * attractiveF;
     }
   }
 
@@ -253,6 +252,7 @@ void main()
       this.k =  Math.sqrt(this.k_2);
 
       var textureSize = nodesCount + edgesCount * 2;
+      this.textureSize = textureSize;
       var gpgpUtility = new vizit.utility.GPGPUtility(textureSize, 1, {premultipliedAlpha:false});
       this.gpgpUtility = gpgpUtility;
 
