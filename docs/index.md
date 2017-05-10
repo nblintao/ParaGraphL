@@ -16,6 +16,8 @@ This is a significant feature for data scientists, artists, and journalists, who
 ## Preliminary Result
 We have achieved significant speedup, compared to an implementation without WebGL on [Fruchterman Reingold graph layout algorithm](https://github.com/gephi/gephi/wiki/Fruchterman-Reingold). To our knowledge, we are the first one who implements graph layout algorithms with WebGL.
 
+*Speedup graph is comming in one hour! Please come back at that time. Thanks!*
+
 ## Plan for Friday
 - A cool live demo for visualizing a large-scale graph on a web page (It could be more exciting to show this by providing a short URL and let everyone present view on their laptops)
 - A speedup benchmark graph like the one shows above. It would be an even better speedup since we will apply more optimizations before Friday.
