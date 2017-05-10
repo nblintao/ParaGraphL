@@ -174,30 +174,26 @@
       return this.running;
     };
 */
-    this.setupGo = function () {
-      this.iterCount = this.config.iterations;
 
-      var nodes = this.sigInst.graph.nodes();
-      var edges = this.sigInst.graph.edges();
-      console.log(nodes);
-      console.log(edges);
-      var nodesCount = nodes.length;
-      var edgesCount = edges.length;
-      this.config.area = this.config.autoArea ? (nodesCount * nodesCount) : this.config.area;
-      var maxDisplace = Math.sqrt(this.config.area) / 10;
-      var k = Math.sqrt(this.config.area / (1 + nodesCount));
+    this.atomicGo = function (input, output) {
+      var outputBuffer = gpgpUtility.attachFrameBuffer(output);
 
-      var textureSize = nodesCount + edgesCount * 2;
-      console.log(vizit);
-      console.log(vizit.utility);
-      console.log(new vizit.utility.GPGPUtility(textureSize, 1, {premultipliedAlpha:false}));
-      var gpgpUtility = new vizit.utility.GPGPUtility(textureSize, 1, {premultipliedAlpha:false});
+      gl.useProgram(program);
 
-      if (!gpgpUtility.isFloatingTexture()) {
-        alert("Floating point textures are not supported.");
-        return false;
-      }
+      gpgpUtility.getStandardVertices();
 
+      // TODO: what?
+      gl.vertexAttribPointer(positionHandle,     3, gl.FLOAT, gl.FALSE, 20, 0);
+      gl.vertexAttribPointer(textureCoordHandle, 2, gl.FLOAT, gl.FALSE, 20, 12);
+
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_2D, input);
+      gl.uniform1i(textureHandle, 0);
+
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    }
+
+    this.buildTextureData = function () {
       var dataArray = [];
       var nodeDict = [];
       var mapIdPos = {};
@@ -229,9 +225,44 @@
         }
       }
       console.log(dataArray);
-      data = new Float32Array(dataArray)
+      return new Float32Array(dataArray);
+    };
 
+    this.setupGo = function () {
+      this.iterCount = this.config.iterations;
 
+      var nodes = this.sigInst.graph.nodes();
+      var edges = this.sigInst.graph.edges();
+      console.log(nodes);
+      console.log(edges);
+      var nodesCount = nodes.length;
+      var edgesCount = edges.length;
+      this.config.area = this.config.autoArea ? (nodesCount * nodesCount) : this.config.area;
+      var maxDisplace = Math.sqrt(this.config.area) / 10;
+      var k = Math.sqrt(this.config.area / (1 + nodesCount));
+
+      var textureSize = nodesCount + edgesCount * 2;
+      console.log(vizit);
+      console.log(vizit.utility);
+      console.log(new vizit.utility.GPGPUtility(textureSize, 1, {premultipliedAlpha:false}));
+      var gpgpUtility = new vizit.utility.GPGPUtility(textureSize, 1, {premultipliedAlpha:false});
+
+      if (!gpgpUtility.isFloatingTexture()) {
+        alert("Floating point textures are not supported.");
+        return false;
+      }
+
+      var data = this.buildTextureData();
+      this.texture_input = gpgpUtility.makeTexture(WebGLRenderingContext.FLOAT, data);
+      this.texture_output = gpgpUtility.makeTexture(WebGLRenderingContext.FLOAT, data);
+
+      // Check if frame buffer works
+      var framebuffer  = gpgpUtility.attachFrameBuffer(this.texture_output);
+      var bufferStatus = gpgpUtility.frameBufferIsComplete();
+      if (!bufferStatus.isComplete) {
+        alert(bufferStatus.message);
+        return false;
+      }
 
       return true;
     }
@@ -240,9 +271,12 @@
       if (!this.setupGo()) {
         return;
       }
-      // while (this.running) {
-      //   this.atomicGo();
-      // };
+      while (this.running) {
+        var tmp = this.texture_input;
+        this.texture_input = this.texture_output;
+        this.texture_output = tmp;
+        this.atomicGo(this.texture_input, this.texture_output);
+      };
 
       this.stop();
     };
