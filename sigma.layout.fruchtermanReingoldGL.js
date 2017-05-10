@@ -86,7 +86,8 @@ void main()
   i = int(vTextureCoord.s * float(` + this.textureSize + `));
 
   node_i = texture2D(m, vec2(vTextureCoord.s, 1));
-  gl_FragColor.b = node_i.g;
+
+
 
   for (int j = 0; j < ` + this.nodesCount.toString() + `; j++) {
     if (i != j) {
@@ -106,19 +107,19 @@ void main()
 
   int offset = int(node_i.b);
   int length = int(node_i.a);
-  int end = offset + length;
+  gl_FragColor.b = float(offset); 
+  gl_FragColor.a = float(length); 
   for (int p = 0; p < `+ String(this.maxEdgePerVetex) +`; p++) {
     if (p >= length) break;
     int t = offset + p;
     node_j_id = texture2D(m, vec2(float(t) / float(` + this.textureSize + `) , 1)).r;
-    node_j = texture2D(m, vec2(float(node_j_id) / float(` + this.textureSize + `), 1));
-
+    node_j = texture2D(m, vec2(node_j_id / float(` + this.textureSize + `), 1));
     xDist = node_i.r - node_j.r;
     yDist = node_i.g - node_j.g;
     dist = sqrt(xDist * xDist + yDist * yDist) + 0.01;
-
+    
     attractiveF = dist * dist / ` + this.k + `;
-
+    if (p == 0) gl_FragColor.b = dist;
     if (dist > 0.0) {
       dx -= xDist / dist * attractiveF;
       dy -= yDist / dist * attractiveF;
@@ -139,11 +140,12 @@ void main()
   xDist = dx;
   yDist = dy;
   dist = sqrt(xDist * xDist + yDist * yDist);
-
+  gl_FragColor.r = node_i.r;
+  gl_FragColor.g = node_i.g;
   if (dist > 0.0) {
     limitedDist = min(` + String(this.maxDisplace * self.config.speed) + `, dist);
-    gl_FragColor.r = node_i.r + xDist / dist * limitedDist;
-    gl_FragColor.g = node_i.g + yDist / dist * limitedDist;
+    gl_FragColor.r += xDist / dist * limitedDist;
+    gl_FragColor.g += yDist / dist * limitedDist;
   }
 }
 `
