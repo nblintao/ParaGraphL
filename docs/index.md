@@ -19,8 +19,7 @@ We have achieved significant speedup, compared to an implementation without WebG
 We test the program multiple times on a graph with 100, 500, 1000 edges and get the average runtime. The error is within 3%. We could achieve about 32x speedup for the layout of a graph with 500 edges in 10000 iterations on New MacBook. More detailed speed graph is coming soon.
 
 
-
-*Speedup graph is coming at 3:00 PM! Please come back at that time. Thanks!*
+![](https://docs.google.com/spreadsheets/d/1_oFw0mLP40VYmBR3hsil_GXz2kpFIqRnAGwQcRqrzoE/pubchart?oid=1497158958&format=image)
 
 ## Plan for Friday
 - A cool live demo for visualizing a large-scale graph on a web page (It could be more exciting to show this by providing a short URL and let everyone present view on their laptops)
