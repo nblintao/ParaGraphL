@@ -4,6 +4,9 @@
   if (typeof sigma === 'undefined')
     throw new Error('sigma is not declared');
 
+  if (typeof vizit === 'undefined')
+    throw new Error('vizit is not declared');
+
   // Initialize package:
   sigma.utils.pkg('sigma.layouts.fruchtermanReingoldGL');
 
@@ -62,11 +65,9 @@
     /**
      * Single layout iteration.
      */
-    this.atomicGo = function () {
+  /*  this.atomicGo = function () {
       if (!this.running || this.iterCount < 1) return false;
 
-      var nodes = this.sigInst.graph.nodes(),
-          edges = this.sigInst.graph.edges(),
           i,
           j,
           n,
@@ -76,15 +77,11 @@
           yDist,
           dist,
           repulsiveF,
-          nodesCount = nodes.length,
-          edgesCount = edges.length;
 
-      this.config.area = this.config.autoArea ? (nodesCount * nodesCount) : this.config.area;
+
+
       this.iterCount--;
       this.running = (this.iterCount > 0);
-
-      var maxDisplace = Math.sqrt(this.config.area) / 10,
-          k = Math.sqrt(this.config.area / (1 + nodesCount));
 
       for (i = 0; i < nodesCount; i++) {
         n = nodes[i];
@@ -176,13 +173,76 @@
 
       return this.running;
     };
-
-    this.go = function () {
+*/
+    this.setupGo = function () {
       this.iterCount = this.config.iterations;
 
-      while (this.running) {
-        this.atomicGo();
-      };
+      var nodes = this.sigInst.graph.nodes();
+      var edges = this.sigInst.graph.edges();
+      console.log(nodes);
+      console.log(edges);
+      var nodesCount = nodes.length;
+      var edgesCount = edges.length;
+      this.config.area = this.config.autoArea ? (nodesCount * nodesCount) : this.config.area;
+      var maxDisplace = Math.sqrt(this.config.area) / 10;
+      var k = Math.sqrt(this.config.area / (1 + nodesCount));
+
+      var textureSize = nodesCount + edgesCount * 2;
+      console.log(vizit);
+      console.log(vizit.utility);
+      console.log(new vizit.utility.GPGPUtility(textureSize, 1, {premultipliedAlpha:false}));
+      var gpgpUtility = new vizit.utility.GPGPUtility(textureSize, 1, {premultipliedAlpha:false});
+
+      if (!gpgpUtility.isFloatingTexture()) {
+        alert("Floating point textures are not supported.");
+        return false;
+      }
+
+      var dataArray = [];
+      var nodeDict = [];
+      var mapIdPos = {};
+      for (i = 0; i < nodesCount; i++) {
+        var n = nodes[i];
+        mapIdPos[n.id] = i;
+        dataArray.push(n.x);
+        dataArray.push(n.y);
+        dataArray.push(0);
+        dataArray.push(0);
+        nodeDict[i] = [];
+      }
+      for (i = 0; i < edgesCount; i++) {
+        var e = edges[i];
+        nodeDict[mapIdPos[e.source]].push(e.target);
+        nodeDict[mapIdPos[e.target]].push(e.source);
+      }
+
+      for (i = 0; i < nodesCount; i++) {
+        var offset = dataArray.length;
+        var dests = nodeDict[i];
+        dataArray[i * 4 + 2] = offset;
+        dataArray[i * 4 + 3] = dests.length;
+        for (var dest in dests) {
+          dataArray.push(dest);
+          dataArray.push(0);
+          dataArray.push(0);
+          dataArray.push(0);
+        }
+      }
+      console.log(dataArray);
+      data = new Float32Array(dataArray)
+
+
+
+      return true;
+    }
+
+    this.go = function () {
+      if (!this.setupGo()) {
+        return;
+      }
+      // while (this.running) {
+      //   this.atomicGo();
+      // };
 
       this.stop();
     };
