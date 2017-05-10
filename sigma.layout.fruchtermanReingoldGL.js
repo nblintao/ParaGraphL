@@ -191,8 +191,8 @@ void main()
   float value = 0.0;
   i = vTextureCoord.s;
   j = vTextureCoord.t;
-  gl_FragColor.r = texture2D(m, vec2(1, j)).r + 0.005;
-  gl_FragColor.g = texture2D(m, vec2(1, j)).g;
+  gl_FragColor.r = texture2D(m, vec2(i, 1)).r / 2.0;
+  gl_FragColor.g = texture2D(m, vec2(i, 1)).g;
 }
 `
     var program = gpgpUtility.createProgram(null, sourceCode);
@@ -271,16 +271,16 @@ void main()
       var gl = this.gpgpUtility.getGLContext();
       var nodesCount = nodes.length;
       var output_arr = new Float32Array(nodesCount * 4);
-      gl.readPixels(0, 0, nodesCount * 4, 1, gl.RGBA, gl.FLOAT, output_arr);
+      gl.readPixels(0, 0, nodesCount, 1, gl.RGBA, gl.FLOAT, output_arr);
 
       console.log(output_arr);
       var nodes = this.sigInst.graph.nodes();
       for (i = 0; i < nodesCount; ++i) {
         var n = nodes[i];
-        n.x = output_arr[4 * i];
-        n.y = output_arr[4 * i + 1];
+        n.fr_x = output_arr[4 * i];
+        n.fr_y = output_arr[4 * i + 1];
       }
-      
+
     }
 
     this.setupGo = function () {
@@ -325,12 +325,12 @@ void main()
       if (!this.setupGo()) {
         return;
       }
-      // while (this.running) {
-      //   var tmp = this.texture_input;
-      //   this.texture_input = this.texture_output;
-      //   this.texture_output = tmp;
-      //   this.atomicGo(this.texture_input, this.texture_output);
-      // };
+      while (this.running) {
+        var tmp = this.texture_input;
+        this.texture_input = this.texture_output;
+        this.texture_output = tmp;
+        this.atomicGo(this.texture_input, this.texture_output);
+      };
       this.saveDataToNode();
       this.stop();
     };
