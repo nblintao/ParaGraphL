@@ -170,8 +170,11 @@
     };
 */
 
-  this.createProgram = function (gl)
+  this.createProgram = function ()
   {
+    var gl = this.gl;
+    var gpgpUtility = this.gpgpUtility;
+
     var sourceCode = `
 #ifdef GL_FRAGMENT_PRECISION_HIGH
 precision highp float;
@@ -192,14 +195,14 @@ void main()
   gl_FragColor.g = texture2D(m, vec2(1, j)).g;
 }
 `
-    this.program = gpgpUtility.createProgram(null, sourceCode);
+    var program = gpgpUtility.createProgram(null, sourceCode);
     this.positionHandle = gpgpUtility.getAttribLocation(program,  "position");
     gl.enableVertexAttribArray(this.positionHandle);
     this.textureCoordHandle = gpgpUtility.getAttribLocation(program,  "textureCoord");
     gl.enableVertexAttribArray(this.textureCoordHandle);
     this.textureHandle = gl.getUniformLocation(program, "texture");
 
-    return program;
+    this.program = program;
   };
 
     this.atomicGo = function (input, output) {
@@ -207,9 +210,12 @@ void main()
       this.iterCount--;
       this.running = (this.iterCount > 0);
 
+      var gl = this.gl;
+      var gpgpUtility = this.gpgpUtility;
+
       var outputBuffer = gpgpUtility.attachFrameBuffer(output);
 
-      gl.useProgram(program);
+      gl.useProgram(this.program);
 
       gpgpUtility.getStandardVertices();
 
@@ -224,7 +230,7 @@ void main()
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     }
 
-    this.buildTextureData = function () {
+    this.buildTextureData = function (nodes, edges, nodesCount, edgesCount) {
       var dataArray = [];
       var nodeDict = [];
       var mapIdPos = {};
@@ -264,8 +270,6 @@ void main()
 
       var nodes = this.sigInst.graph.nodes();
       var edges = this.sigInst.graph.edges();
-      console.log(nodes);
-      console.log(edges);
       var nodesCount = nodes.length;
       var edgesCount = edges.length;
       this.config.area = this.config.autoArea ? (nodesCount * nodesCount) : this.config.area;
@@ -273,17 +277,18 @@ void main()
       var k = Math.sqrt(this.config.area / (1 + nodesCount));
 
       var textureSize = nodesCount + edgesCount * 2;
-      console.log(vizit);
-      console.log(vizit.utility);
-      console.log(new vizit.utility.GPGPUtility(textureSize, 1, {premultipliedAlpha:false}));
       var gpgpUtility = new vizit.utility.GPGPUtility(textureSize, 1, {premultipliedAlpha:false});
+      this.gpgpUtility = gpgpUtility;
 
       if (!gpgpUtility.isFloatingTexture()) {
         alert("Floating point textures are not supported.");
         return false;
       }
 
-      var data = this.buildTextureData();
+      this.gl = gpgpUtility.getGLContext();
+      this.createProgram();
+
+      var data = this.buildTextureData(nodes, edges, nodesCount, edgesCount);
       this.texture_input = gpgpUtility.makeTexture(WebGLRenderingContext.FLOAT, data);
       this.texture_output = gpgpUtility.makeTexture(WebGLRenderingContext.FLOAT, data);
 
