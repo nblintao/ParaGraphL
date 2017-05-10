@@ -105,7 +105,9 @@ void main()
   }
 
   int offset = int(node_i.b);
+  gl_FragColor.b = float(offset);
   int length = int(node_i.a);
+  gl_FragColor.a = float(length);
   int end = offset + length;
   for (int p = 0; p < `+ String(this.maxEdgePerVetex) +`; p++) {
     if (p >= length) break;
@@ -206,7 +208,7 @@ void main()
       for (i = 0; i < nodesCount; i++) {
         var offset = dataArray.length;
         var dests = nodeDict[i];
-        dataArray[i * 4 + 2] = offset;
+        dataArray[i * 4 + 2] = offset / 4;
         dataArray[i * 4 + 3] = dests.length;
         this.maxEdgePerVetex = Math.max(this.maxEdgePerVetex, dests.length);
         for (var dest in dests) {
