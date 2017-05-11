@@ -5,6 +5,7 @@
 <script src="third_party/sigma.js/build/plugins/sigma.plugins.animate.min.js"></script>
 <script src="GPGPUtility.js"></script>
 <script src="sigma.layout.fruchtermanReingoldGL.js"></script>
+<script src="sigma.layout.fruchtermanReingold.js"></script>
 <script src="data/grqc_auto.js"></script>
 
 
@@ -137,7 +138,7 @@ for (iteration = 0; iteration < loop; iteration++) {
     });
   })
   var config = {
-    iterations : 1
+    iterations : 1000
   };
   var listener = sigma.layouts.fruchtermanReingoldGL.configure(s, config);
   listener.bind('start stop', func);

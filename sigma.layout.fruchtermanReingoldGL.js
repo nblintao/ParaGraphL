@@ -84,12 +84,14 @@ void main()
   vec4 node_i = texture2D(m, vec2(vTextureCoord.s, 1));
 
   gl_FragColor = node_i;
+  //gl_FragColor.r = float(i);
+  //return;
 
-  if (i >= ` + this.nodesCount + `) return;
+  if (i > ` + this.nodesCount + `) return;
 
   for (int j = 0; j < ` + this.nodesCount.toString() + `; j++) {
-    if (i != j) {
-      vec4 node_j = texture2D(m, vec2(float(j) / float(` + this.textureSize + `) , 1));
+    if (i != j + 1) {
+      vec4 node_j = texture2D(m, vec2((float(j) + 0.5) / float(` + this.textureSize + `) , 1));
 
       float xDist = node_i.r - node_j.r;
       float yDist = node_i.g - node_j.g;
@@ -109,12 +111,10 @@ void main()
     if (p >= length) break;
     int t = offset + p;
     float float_j = texture2D(m, vec2((float(t) + 0.5) / float(` + this.textureSize + `) , 1)).r;
-    int int_j = int(floor(float_j + 0.5));
-    vec4 node_j = texture2D(m, vec2(float(int_j) / float(` + this.textureSize + `), 1));
+    vec4 node_j = texture2D(m, vec2((float_j + 0.5) / float(` + this.textureSize + `), 1));
     float xDist = node_i.r - node_j.r;
     float yDist = node_i.g - node_j.g;
     float dist = sqrt(xDist * xDist + yDist * yDist) + 0.01;
-
     float attractiveF = dist * dist / ` + this.k + `;
     if (dist > 0.0) {
       dx -= xDist / dist * attractiveF;
@@ -184,26 +184,33 @@ void main()
       for (var i = 0; i < nodesCount; i++) {
         var n = nodes[i];
         mapIdPos[n.id] = i;
+        console.log(n.id, i);
         dataArray.push(n.x);
         dataArray.push(n.y);
         dataArray.push(0);
         dataArray.push(0);
-        nodeDict[i] = [];
+        nodeDict.push([]);
       }
       for (var i = 0; i < edgesCount; i++) {
         var e = edges[i];
+        console.log(mapIdPos[e.source], mapIdPos[e.target]);
         nodeDict[mapIdPos[e.source]].push(mapIdPos[e.target]);
         nodeDict[mapIdPos[e.target]].push(mapIdPos[e.source]);
       }
+      console.log(nodeDict);
 
       this.maxEdgePerVetex = 0;
       for (i = 0; i < nodesCount; i++) {
         var offset = dataArray.length;
         var dests = nodeDict[i];
+        var len = dests.length;
+        console.log(dests[0]);
         dataArray[i * 4 + 2] = offset / 4;
         dataArray[i * 4 + 3] = dests.length;
         this.maxEdgePerVetex = Math.max(this.maxEdgePerVetex, dests.length);
-        for (var dest in dests) {
+        for (var j = 0; j < len; ++j) {
+          var dest = dests[j];
+          // console.log(i, dest);
           dataArray.push(+dest);
           dataArray.push(+dest);
           dataArray.push(+dest);
@@ -222,7 +229,7 @@ void main()
       var output_arr = new Float32Array(nodesCount * 4);
       gl.readPixels(0, 0, nodesCount, 1, gl.RGBA, gl.FLOAT, output_arr);
 
-      console.log(output_arr);
+      // console.log(output_arr);
 
       var test = new Float32Array(this.textureSize * 4);
       gl.readPixels(0, 0, this.textureSize, 1, gl.RGBA, gl.FLOAT, test);
@@ -411,7 +418,6 @@ void main()
     if (!sigInst) throw new Error('Missing argument: "sigInst"');
     if (!config) throw new Error('Missing argument: "config"');
 
-    console.log(this.iterCount);
     // Create instance if undefined
     if (!_instance[sigInst.id]) {
       _instance[sigInst.id] = new FruchtermanReingoldGL();
