@@ -120,8 +120,10 @@ for (iteration = 0; iteration < loop; iteration++) {
     s.graph.addNode({
       id: d.id,
       label: 'Node ' + d.id,
-      x: Math.random(),
-      y: Math.random(),
+      // x: Math.random(),
+      // y: Math.random(),
+      x: d.id % 97,
+      y: d.id % 31,
       size: 1
     });
   })
@@ -140,6 +142,7 @@ for (iteration = 0; iteration < loop; iteration++) {
   var listener = sigma.layouts.fruchtermanReingoldGL.configure(s, config);
   listener.bind('start stop', func);
   sigma.layouts.fruchtermanReingoldGL.start(s);
+  hahaha = s;
 }
 
 document.getElementById('MaxTime').innerText = 'Max: ' + max_val + ' ms';
