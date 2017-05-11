@@ -108,7 +108,7 @@ void main()
   for (int p = 0; p < `+ String(this.maxEdgePerVetex) +`; p++) {
     if (p >= length) break;
     int t = offset + p;
-    float float_j = texture2D(m, vec2(float(t) / float(` + this.textureSize + `) , 1)).r;
+    float float_j = texture2D(m, vec2((float(t) + 0.5) / float(` + this.textureSize + `) , 1)).r;
     int int_j = int(floor(float_j + 0.5));
     vec4 node_j = texture2D(m, vec2(float(int_j) / float(` + this.textureSize + `), 1));
     float xDist = node_i.r - node_j.r;
@@ -133,13 +133,11 @@ void main()
   dy *= ` + String(self.config.speed) + `;
 
   // Apply computed displacement
-  float xDist = dx;
-  float yDist = dy;
-  float dist = sqrt(xDist * xDist + yDist * yDist);
+  float dist = sqrt(dx * dx + dy * dy);
   if (dist > 0.0) {
     float limitedDist = min(` + String(this.maxDisplace * self.config.speed) + `, dist);
-    gl_FragColor.r += xDist / dist * limitedDist;
-    gl_FragColor.g += yDist / dist * limitedDist;
+    gl_FragColor.r += dx / dist * limitedDist;
+    gl_FragColor.g += dy / dist * limitedDist;
   }
 }
 `
@@ -194,8 +192,8 @@ void main()
       }
       for (var i = 0; i < edgesCount; i++) {
         var e = edges[i];
-        nodeDict[mapIdPos[e.source]].push(e.target);
-        nodeDict[mapIdPos[e.target]].push(e.source);
+        nodeDict[mapIdPos[e.source]].push(mapIdPos[e.target]);
+        nodeDict[mapIdPos[e.target]].push(mapIdPos[e.source]);
       }
 
       this.maxEdgePerVetex = 0;
@@ -207,9 +205,9 @@ void main()
         this.maxEdgePerVetex = Math.max(this.maxEdgePerVetex, dests.length);
         for (var dest in dests) {
           dataArray.push(+dest);
-          dataArray.push(0);
-          dataArray.push(0);
-          dataArray.push(0);
+          dataArray.push(+dest);
+          dataArray.push(+dest);
+          dataArray.push(+dest);
         }
       }
       console.log(dataArray);
