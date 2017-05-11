@@ -87,7 +87,9 @@ void main()
 
   node_i = texture2D(m, vec2(vTextureCoord.s, 1));
 
+  gl_FragColor = node_i;
 
+  if (i >= ` + this.nodesCount + `) return;
 
   for (int j = 0; j < ` + this.nodesCount.toString() + `; j++) {
     if (i != j) {
@@ -107,8 +109,6 @@ void main()
 
   int offset = int(node_i.b);
   int length = int(node_i.a);
-  gl_FragColor.b = float(offset);
-  gl_FragColor.a = float(length);
   for (int p = 0; p < `+ String(this.maxEdgePerVetex) +`; p++) {
     if (p >= length) break;
     int t = offset + p;
@@ -119,7 +119,7 @@ void main()
     dist = sqrt(xDist * xDist + yDist * yDist) + 0.01;
 
     attractiveF = dist * dist / ` + this.k + `;
-    if (p == 0) gl_FragColor.b = dist;
+    // if (p == 0) gl_FragColor.b = dist;
     if (dist > 0.0) {
       dx -= xDist / dist * attractiveF;
       dy -= yDist / dist * attractiveF;
@@ -140,8 +140,6 @@ void main()
   xDist = dx;
   yDist = dy;
   dist = sqrt(xDist * xDist + yDist * yDist);
-  gl_FragColor.r = node_i.r;
-  gl_FragColor.g = node_i.g;
   if (dist > 0.0) {
     limitedDist = min(` + String(this.maxDisplace * self.config.speed) + `, dist);
     gl_FragColor.r += xDist / dist * limitedDist;
@@ -212,7 +210,7 @@ void main()
         dataArray[i * 4 + 3] = dests.length;
         this.maxEdgePerVetex = Math.max(this.maxEdgePerVetex, dests.length);
         for (var dest in dests) {
-          dataArray.push(dest);
+          dataArray.push(+dest);
           dataArray.push(0);
           dataArray.push(0);
           dataArray.push(0);
@@ -223,7 +221,7 @@ void main()
     };
 
     this.saveDataToNode = function() {
-      this.texture_output;
+      // this.texture_output;
       var nodes = this.sigInst.graph.nodes();
       var gl = this.gpgpUtility.getGLContext();
       var nodesCount = nodes.length;
@@ -231,6 +229,11 @@ void main()
       gl.readPixels(0, 0, nodesCount, 1, gl.RGBA, gl.FLOAT, output_arr);
 
       console.log(output_arr);
+
+      var test = new Float32Array(this.textureSize * 4);
+      gl.readPixels(0, 0, this.textureSize, 1, gl.RGBA, gl.FLOAT, test);
+      console.log(test);
+
       var nodes = this.sigInst.graph.nodes();
       for (var i = 0; i < nodesCount; ++i) {
         var n = nodes[i];
