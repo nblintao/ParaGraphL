@@ -107,8 +107,8 @@ void main()
 
   int offset = int(node_i.b);
   int length = int(node_i.a);
-  gl_FragColor.b = float(offset); 
-  gl_FragColor.a = float(length); 
+  gl_FragColor.b = float(offset);
+  gl_FragColor.a = float(length);
   for (int p = 0; p < `+ String(this.maxEdgePerVetex) +`; p++) {
     if (p >= length) break;
     int t = offset + p;
@@ -117,7 +117,7 @@ void main()
     xDist = node_i.r - node_j.r;
     yDist = node_i.g - node_j.g;
     dist = sqrt(xDist * xDist + yDist * yDist) + 0.01;
-    
+
     attractiveF = dist * dist / ` + this.k + `;
     if (p == 0) gl_FragColor.b = dist;
     if (dist > 0.0) {
@@ -189,7 +189,7 @@ void main()
       var dataArray = [];
       var nodeDict = [];
       var mapIdPos = {};
-      for (i = 0; i < nodesCount; i++) {
+      for (var i = 0; i < nodesCount; i++) {
         var n = nodes[i];
         mapIdPos[n.id] = i;
         dataArray.push(n.x);
@@ -198,7 +198,7 @@ void main()
         dataArray.push(0);
         nodeDict[i] = [];
       }
-      for (i = 0; i < edgesCount; i++) {
+      for (var i = 0; i < edgesCount; i++) {
         var e = edges[i];
         nodeDict[mapIdPos[e.source]].push(e.target);
         nodeDict[mapIdPos[e.target]].push(e.source);
@@ -232,7 +232,7 @@ void main()
 
       console.log(output_arr);
       var nodes = this.sigInst.graph.nodes();
-      for (i = 0; i < nodesCount; ++i) {
+      for (var i = 0; i < nodesCount; ++i) {
         var n = nodes[i];
         n.fr_x = output_arr[4 * i];
         n.fr_y = output_arr[4 * i + 1];
@@ -413,7 +413,7 @@ void main()
   sigma.layouts.fruchtermanReingoldGL.configure = function(sigInst, config) {
     if (!sigInst) throw new Error('Missing argument: "sigInst"');
     if (!config) throw new Error('Missing argument: "config"');
-    
+
     console.log(this.iterCount);
     // Create instance if undefined
     if (!_instance[sigInst.id]) {

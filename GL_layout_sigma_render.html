@@ -2,8 +2,6 @@
 <meta charset="utf-8">
 
 <script src="third_party/sigma.js/build/sigma.min.js"></script>
-<script src="third_party/sigma.js/build/plugins/sigma.layout.forceAtlas2.min.js"></script>
-<script src="third_party/sigma.js/build/plugins/sigma.layout.noverlap.min.js"></script>
 <script src="third_party/sigma.js/build/plugins/sigma.plugins.animate.min.js"></script>
 <script src="GPGPUtility.js"></script>
 <script src="sigma.layout.fruchtermanReingoldGL.js"></script>
@@ -56,7 +54,7 @@
 
 <div id="container">
   <div id="webgl">
-    <button id="layout" type="button">Layout</button>
+    <!--<button id="layout" type="button">Layout</button>-->
     <p id="MaxTime"></p>
     <p id="MinTime"></p>
     <p id="AvgTime"></p>
@@ -66,55 +64,8 @@
 
 <script>
 
-var i,
-    N = 100,
-    E = 500,
-    s = new sigma(),
-    cam = s.addCamera();
-
-// Initialize two distinct renderers, each with its own settings:
-s.addRenderer({
-  container: document.getElementById('webgl'),
-  type: 'webgl',
-  camera: cam,
-  settings: {
-    defaultLabelColor: '#000',
-    defaultNodeColor: '#666',
-    defaultEdgeColor: '#999',
-    edgeColor: 'default',
-    drawLabels: false
-  }
-});
-
-
-
-
-s.refresh();
-
-
-// var force = false;
-// document.getElementById('layout').onclick = function() {
-//   if (!force) {
-//     console.log('Start layout');
-//      s.startForceAtlas2({slowDown: 10});
-//   }
-//   else {
-//     console.log('Stop layout');
-//     s.stopForceAtlas2();
-//   }
-
-//   force = !force;
-// };
-
-
-// Start the algorithm:
-var config = {
-  iterations : 1
-};
 
 var duration = 0.0;
-var loop = 10;
-var i = 0;
 var min_val = 0.0;
 var max_val = 0.0;
 var sum_val = 0.0;
@@ -129,7 +80,7 @@ var func = function(event) {
   else {
     var end_time = performance.now();
     duration += end_time - start_time;
-    if (i === 0) {
+    if (iteration === 0) {
       min_val = duration;
       max_val = duration;
       sum_val = duration;
@@ -140,10 +91,31 @@ var func = function(event) {
     }
     console.log(duration);
   }
-}; 
+};
 
-for (i = 0; i < loop; ++i) { 
-  console.log(i);
+var iteration;
+var loop = 1;
+for (iteration = 0; iteration < loop; iteration++) {
+  console.log(iteration);
+  var s = new sigma();
+  var cam = s.addCamera();
+
+  // Initialize two distinct renderers, each with its own settings:
+  s.addRenderer({
+    container: document.getElementById('webgl'),
+    type: 'webgl',
+    camera: cam,
+    settings: {
+      defaultLabelColor: '#000',
+      defaultNodeColor: '#666',
+      defaultEdgeColor: '#999',
+      edgeColor: 'default',
+      drawLabels: false
+    }
+  });
+
+  s.refresh();
+
   graph.nodes.map(function(d){
     s.graph.addNode({
       id: d.id,
@@ -163,16 +135,16 @@ for (i = 0; i < loop; ++i) {
     });
   })
   var config = {
-    iterations : 1000
+    iterations : 100
   };
   var listener = sigma.layouts.fruchtermanReingoldGL.configure(s, config);
   listener.bind('start stop', func);
   sigma.layouts.fruchtermanReingoldGL.start(s);
 }
 
-document.getElementById('MaxTime').innerText = max_val + ' ms';
-document.getElementById('MinTime').innerText = min_val + ' ms';
-document.getElementById('AvgTime').innerText = sum_val / loop + ' ms';
+document.getElementById('MaxTime').innerText = 'Max: ' + max_val + ' ms';
+document.getElementById('MinTime').innerText = 'Min: ' + min_val + ' ms';
+document.getElementById('AvgTime').innerText = 'Avg: ' + sum_val / loop + ' ms';
 
 </script>
 
