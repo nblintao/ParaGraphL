@@ -29,7 +29,7 @@ We test the program multiple times on a graph with 100, 500, 1000 edges and get 
 
 
 
-### What is the baseline that speedup is being compared against?*
+### What is the baseline that speedup is being compared against?
 The baseline is an implementation of Fruchterman Reingold layout algorithm provided by Sigma.js (a popular JavaScript library dedicated to graph visualization). It does not use GPU to calculate the layout. Our version uses the same algorithm and configurations to make a fair comparison.
 
 ### Force-directed layout algorithms need to be interactive to be useful.  What are the milis-er-frame times for your graphs?
