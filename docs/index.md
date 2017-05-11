@@ -25,6 +25,23 @@ We test the program multiple times on a graph with 100, 500, 1000 edges and get 
 - A cool live demo for visualizing a large-scale graph on a web page (It could be more exciting to show this by providing a short URL and let everyone present view on their laptops)
 - A speedup benchmark graph like the one shows above. It would be an even better speedup since we will apply more optimizations before Friday.
 
+## FAQ
+
+
+
+### What is the baseline that speedup is being compared against?*
+The baseline is an implementation of Fruchterman Reingold layout algorithm provided by Sigma.js (a popular JavaScript library dedicated to graph visualization). It does not use GPU to calculate the layout. Our version uses the same algorithm and configurations to make a fair comparison.
+
+### Force-directed layout algorithms need to be interactive to be useful.  What are the milis-er-frame times for your graphs?
+For a graph with 2092 nodes and 5000 edges, it takes 1830 ms to finish 1000 iterations, on a Macbook Air. That's to say, calculating the layout of each frame takes only 1.83 ms. (In the current setting, we only render after finishing all iterations. We will invoke rendering more frequently to have a more interactive manner.)
+
+### We'll want to know a *very* brief description of the workload characteristics of the algorithm.
+In one iteration, each node will compute a repulsive force by accessing the positions of all other nodes, and an attractive force by accessing the positions of connected nodes, and then add gravity and speed to get a new position. Approximately, it has about 10 float points operations every 16 bytes memory access. I would consider the workload as memory intensive.
+
+### Hopefully you can demo on some real-world graphs?
+The graphs we used in the benchmark are sampled from [a collaboration network of authors on arXiv](https://snap.stanford.edu/data/ca-GrQc.html):
+![](https://nblintao.github.io/ParaGraphL/collaboration_network.png)
+
 # Contributors
 - Tao Lin (<tlin2@andrew.cmu.edu>)
 - Bowei Chen (<boweic@andrew.cmu.edu>)
