@@ -125,7 +125,7 @@ for (iteration = 0; iteration < loop; iteration++) {
       // y: Math.random(),
       x: d.id % 97,
       y: d.id % 31,
-      size: 1
+      size: 0
     });
   })
 
@@ -138,7 +138,7 @@ for (iteration = 0; iteration < loop; iteration++) {
     });
   })
   var config = {
-    iterations : 1000
+    iterations : 100,
   };
   var listener = sigma.layouts.fruchtermanReingoldGL.configure(s, config);
   listener.bind('start stop', func);

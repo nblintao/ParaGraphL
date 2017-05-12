@@ -77,9 +77,9 @@ graph.nodes.map(function(d){
   s.graph.addNode({
     id: d.id,
     label: 'Node ' + d.id,
-    x: Math.random(),
-    y: Math.random(),
-    size: 1
+    x: d.id % 97,
+    y: d.id % 31,
+    size: 0
   });
 })
 

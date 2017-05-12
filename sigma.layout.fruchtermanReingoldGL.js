@@ -219,15 +219,12 @@ void main()
         for (var j = 0; j < len; ++j) {
           var dest = dests[j];
           dataArray.push(+dest);
-          // dataArray.push(+dest);
-          // dataArray.push(+dest);
-          // dataArray.push(+dest);
         }
       }
       // Dummy
       while (dataArray.length % 4 != 0) 
         dataArray.push(0);
-      console.log(dataArray);
+      // console.log(dataArray);
       return new Float32Array(dataArray);
     };
 
@@ -241,15 +238,14 @@ void main()
 
       // console.log(output_arr);
 
-      var test = new Float32Array(this.textureSize * 4);
-      gl.readPixels(0, 0, this.textureSize, 1, gl.RGBA, gl.FLOAT, test);
-      console.log(test);
+      // var test = new Float32Array(this.textureSize * 4);
+      // gl.readPixels(0, 0, this.textureSize, 1, gl.RGBA, gl.FLOAT, test);
+      // console.log(test);
 
-      var nodes = this.sigInst.graph.nodes();
       for (var i = 0; i < nodesCount; ++i) {
         var n = nodes[i];
-        n.fr_x = output_arr[4 * i];
-        n.fr_y = output_arr[4 * i + 1];
+        n.x = output_arr[4 * i];
+        n.y = output_arr[4 * i + 1];
       }
 
     }
@@ -268,7 +264,7 @@ void main()
       this.k =  Math.sqrt(this.k_2);
 
       var textureSize = nodesCount + parseInt((edgesCount * 2 + 3) / 4);
-      console.log(textureSize);
+      // console.log(textureSize);
       this.textureSize = textureSize;
       var gpgpUtility = new vizit.utility.GPGPUtility(textureSize, 1, {premultipliedAlpha:false});
       this.gpgpUtility = gpgpUtility;
@@ -301,7 +297,9 @@ void main()
       if (!this.setupGo()) {
         return;
       }
-      console.log(this.iterCount);
+       
+      
+      // console.log(this.iterCount);
       while (this.running) {
         var tmp = this.texture_input;
         this.texture_input = this.texture_output;
@@ -314,30 +312,29 @@ void main()
 
     this.start = function() {
       if (this.running) return;
-
+      _eventEmitter[self.sigInst.id].dispatchEvent('start');
       var nodes = this.sigInst.graph.nodes();
-
       this.running = true;
 
       // Init nodes
-      for (var i = 0; i < nodes.length; i++) {
-        nodes[i].fr_x = nodes[i].x;
-        nodes[i].fr_y = nodes[i].y;
-        nodes[i].fr = {
-          dx: 0,
-          dy: 0
-        };
-      }
-      _eventEmitter[self.sigInst.id].dispatchEvent('start');
+      // for (var i = 0; i < nodes.length; i++) {
+      //   nodes[i].fr_x = nodes[i].x;
+      //   nodes[i].fr_y = nodes[i].y;
+      //   nodes[i].fr = {
+      //     dx: 0,
+      //     dy: 0
+      //   };
+      // }
+      
       this.go();
     };
 
     this.stop = function() {
-      var nodes = this.sigInst.graph.nodes();
-
+      // var nodes = this.sigInst.graph.nodes();
+      _eventEmitter[self.sigInst.id].dispatchEvent('stop');
       this.running = false;
-
-      if (this.easing) {
+      self.sigInst.refresh();
+      /*if (this.easing) {
         _eventEmitter[self.sigInst.id].dispatchEvent('interpolate');
         sigma.plugins.animate(
           self.sigInst,
@@ -375,7 +372,7 @@ void main()
           nodes[i].fr_y = null;
         }
         _eventEmitter[self.sigInst.id].dispatchEvent('stop');
-      }
+      }*/
     };
 
     this.kill = function() {
