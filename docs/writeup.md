@@ -65,6 +65,11 @@ We test the program multiple times on a graph with 100, 500, 1000 edges and get 
 
 ![](https://docs.google.com/spreadsheets/d/1_oFw0mLP40VYmBR3hsil_GXz2kpFIqRnAGwQcRqrzoE/pubchart?oid=1497158958&format=image)
 
+
+![](https://nblintao.github.io/ParaGraphL/figure/edge.svg)
+
+![](https://nblintao.github.io/ParaGraphL/figure/iteration.svg)
+
 # References
 
 # Contributors
