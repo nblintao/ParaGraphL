@@ -1,7 +1,9 @@
 ---
-title: ParaGraphL
+title: Final Write-up
 ---
-# Summary
+# Final Write-up
+
+## Summary
 
 We implemented a JavaScript framework for calculating the layout for large-scale graphs in the web platform. We use the GLSL on WebGL to do general purpose computation for the graph layout algorithm.
 
@@ -45,11 +47,11 @@ sigma.layouts.fruchtermanReingoldGL.progress(sigInst);
 
 Graph layout algorithms take a series of nodes' coordinates and edges as input, iteratively update the position of each node. These algorithms execute for some iterations or until convergence.
 
-We are utilizing Fruchterman Reingold layout algorithm. In one iteration, each node will compute a repulsive force by accessing the positions of all other nodes, and an attractive force by accessing the positions of connected nodes, and then add gravity and speed to get a new position. 
+We are utilizing Fruchterman Reingold layout algorithm. In one iteration, each node will compute a repulsive force by accessing the positions of all other nodes, and an attractive force by accessing the positions of connected nodes, and then add gravity and speed to get a new position.
 
-Since the computation between nodes are independent in each iteration and a large portion of the memory read can be sequential if we optimize the memory layout, the algorithm is extremely suitable for SPMD program that runs on GPU. 
+Since the computation between nodes are independent in each iteration and a large portion of the memory read can be sequential if we optimize the memory layout, the algorithm is extremely suitable for SPMD program that runs on GPU.
 
-## Approach 
+## Approach
 
 The
 If we put the coordinates for nodes together then followed by edges for each nodes in the global memory, we perform sequential read when computing the repulsive force and when scannig through edge arrays for each node. Thus the program exploits data locality.
