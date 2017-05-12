@@ -105,13 +105,25 @@ void main()
     }
   }
 
-  int offset = int(floor(node_i.b + 0.5));
+  int arr_offset = int(floor(node_i.b + 0.5));
   int length = int(floor(node_i.a + 0.5));
+  vec4 node_buffer;
   for (int p = 0; p < `+ String(this.maxEdgePerVetex) +`; p++) {
     if (p >= length) break;
-    int t = offset + p;
-    float float_j = texture2D(m, vec2((float(t) + 0.5) / float(` + this.textureSize + `) , 1)).r;
-    vec4 node_j = texture2D(m, vec2((float_j + 0.5) / float(` + this.textureSize + `), 1));
+    int arr_idx = arr_offset + p;
+    // when arr_idx % 4 == 0 update node_idx_buffer
+    int buf_offset = arr_idx - arr_idx / 4 * 4;
+    if (p == 0 || buf_offset == 0) {
+      node_buffer = texture2D(m, vec2((float(arr_idx / 4) + 0.5) / 
+                                          float(` + this.textureSize + `) , 1));
+    }
+    float float_j = buf_offset == 0 ? node_buffer.r :
+                    buf_offset == 1 ? node_buffer.g :
+                    buf_offset == 2 ? node_buffer.b :
+                                      node_buffer.a;
+
+    vec4 node_j = texture2D(m, vec2((float_j + 0.5) / 
+                                    float(` + this.textureSize + `), 1));
     float xDist = node_i.r - node_j.r;
     float yDist = node_i.g - node_j.g;
     float dist = sqrt(xDist * xDist + yDist * yDist) + 0.01;
@@ -184,7 +196,6 @@ void main()
       for (var i = 0; i < nodesCount; i++) {
         var n = nodes[i];
         mapIdPos[n.id] = i;
-        console.log(n.id, i);
         dataArray.push(n.x);
         dataArray.push(n.y);
         dataArray.push(0);
@@ -193,30 +204,29 @@ void main()
       }
       for (var i = 0; i < edgesCount; i++) {
         var e = edges[i];
-        console.log(mapIdPos[e.source], mapIdPos[e.target]);
         nodeDict[mapIdPos[e.source]].push(mapIdPos[e.target]);
         nodeDict[mapIdPos[e.target]].push(mapIdPos[e.source]);
       }
-      console.log(nodeDict);
 
       this.maxEdgePerVetex = 0;
       for (i = 0; i < nodesCount; i++) {
         var offset = dataArray.length;
         var dests = nodeDict[i];
         var len = dests.length;
-        console.log(dests[0]);
-        dataArray[i * 4 + 2] = offset / 4;
+        dataArray[i * 4 + 2] = offset;
         dataArray[i * 4 + 3] = dests.length;
         this.maxEdgePerVetex = Math.max(this.maxEdgePerVetex, dests.length);
         for (var j = 0; j < len; ++j) {
           var dest = dests[j];
-          // console.log(i, dest);
           dataArray.push(+dest);
-          dataArray.push(+dest);
-          dataArray.push(+dest);
-          dataArray.push(+dest);
+          // dataArray.push(+dest);
+          // dataArray.push(+dest);
+          // dataArray.push(+dest);
         }
       }
+      // Dummy
+      while (dataArray.length % 4 != 0) 
+        dataArray.push(0);
       console.log(dataArray);
       return new Float32Array(dataArray);
     };
@@ -257,7 +267,8 @@ void main()
       this.k_2 = this.config.area / (1 + nodesCount);
       this.k =  Math.sqrt(this.k_2);
 
-      var textureSize = nodesCount + edgesCount * 2;
+      var textureSize = nodesCount + parseInt((edgesCount * 2 + 3) / 4);
+      console.log(textureSize);
       this.textureSize = textureSize;
       var gpgpUtility = new vizit.utility.GPGPUtility(textureSize, 1, {premultipliedAlpha:false});
       this.gpgpUtility = gpgpUtility;
