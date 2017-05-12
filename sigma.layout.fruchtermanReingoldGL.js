@@ -25,7 +25,8 @@
     area: 1,
     gravity: 10,
     speed: 0.1,
-    iterations: 1000
+    iterations: 1000,
+    iterationsPerRender: 1000
   };
 
   var _instance = {};
@@ -53,6 +54,8 @@
       this.config = sigma.utils.extend(options, settings);
       this.easing = options.easing;
       this.duration = options.duration;
+      // this.easing = options.easing || 'quadraticInOut';
+      // this.duration = options.duration || 500;
 
       if (!sigma.plugins || typeof sigma.plugins.animate === 'undefined') {
         throw new Error('sigma.plugins.animate is not declared');
@@ -184,7 +187,7 @@ void main()
       for (var i = 0; i < nodesCount; i++) {
         var n = nodes[i];
         mapIdPos[n.id] = i;
-        console.log(n.id, i);
+        // console.log(n.id, i);
         dataArray.push(n.x);
         dataArray.push(n.y);
         dataArray.push(0);
@@ -193,18 +196,18 @@ void main()
       }
       for (var i = 0; i < edgesCount; i++) {
         var e = edges[i];
-        console.log(mapIdPos[e.source], mapIdPos[e.target]);
+        // console.log(mapIdPos[e.source], mapIdPos[e.target]);
         nodeDict[mapIdPos[e.source]].push(mapIdPos[e.target]);
         nodeDict[mapIdPos[e.target]].push(mapIdPos[e.source]);
       }
-      console.log(nodeDict);
+      // console.log(nodeDict);
 
       this.maxEdgePerVetex = 0;
       for (i = 0; i < nodesCount; i++) {
         var offset = dataArray.length;
         var dests = nodeDict[i];
         var len = dests.length;
-        console.log(dests[0]);
+        // console.log(dests[0]);
         dataArray[i * 4 + 2] = offset / 4;
         dataArray[i * 4 + 3] = dests.length;
         this.maxEdgePerVetex = Math.max(this.maxEdgePerVetex, dests.length);
@@ -231,9 +234,9 @@ void main()
 
       // console.log(output_arr);
 
-      var test = new Float32Array(this.textureSize * 4);
-      gl.readPixels(0, 0, this.textureSize, 1, gl.RGBA, gl.FLOAT, test);
-      console.log(test);
+      // var test = new Float32Array(this.textureSize * 4);
+      // gl.readPixels(0, 0, this.textureSize, 1, gl.RGBA, gl.FLOAT, test);
+      // console.log(test);
 
       var nodes = this.sigInst.graph.nodes();
       for (var i = 0; i < nodesCount; ++i) {
@@ -244,7 +247,38 @@ void main()
 
     }
 
+    function Supervisor(sigInst) {
+
+      this.sigInst_ = sigInst;
+      console.log(this.sigInst_);
+      this.listener = function() {
+        console.log('233333');
+        console.log(this.sigInst_);
+        this.sigInst_.refresh();
+      }
+      document.addEventListener('doRefresh', this.listener);
+    }
+
+    this.sendRefreshEvent = function() {
+        var e;
+
+        if (document.createEvent) {
+          e = document.createEvent('Event');
+          e.initEvent('doRefresh', true, false);
+        }
+        else {
+          e = document.createEventObject();
+          e.eventType = 'doRefresh';
+        }
+
+        e.eventName = 'doRefresh';
+        requestAnimationFrame(function() {
+          document.dispatchEvent(e);
+        });
+    }
+
     this.setupGo = function () {
+      this.supervisor = new Supervisor(this.sigInst);
       this.iterCount = this.config.iterations;
 
       var nodes = this.sigInst.graph.nodes();
@@ -296,9 +330,18 @@ void main()
         this.texture_input = this.texture_output;
         this.texture_output = tmp;
         this.atomicGo(this.texture_input, this.texture_output);
+        if (this.iterCount % this.config.iterationsPerRender == 0) {
+          this.saveDataToNode();
+          // var that = this;
+          // this.executeAsync(function() {that.renderOnce();});
+          this.renderOnce();
+          // this.sleep(1000)
+          console.log(this.iterCount);
+          // break;
+        }
       };
-      this.saveDataToNode();
-      this.stop();
+      // this.saveDataToNode();
+      // this.stop();
     };
 
     this.start = function() {
@@ -319,6 +362,62 @@ void main()
       }
       _eventEmitter[self.sigInst.id].dispatchEvent('start');
       this.go();
+    };
+
+    this.sleep = function(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    this.executeAsync = function(func) {
+      setTimeout(func, 0);
+    }
+
+
+    this.renderOnce = function() {
+      var nodes = this.sigInst.graph.nodes();
+      console.log(this.easing);
+      if (this.easing) {
+        console.log(this.easing);
+        console.log(this.duration);
+        // _eventEmitter[self.sigInst.id].dispatchEvent('interpolate');
+        sigma.plugins.animate(
+          self.sigInst,
+          {
+            x: 'fr_x',
+            y: 'fr_y'
+          },
+          {
+            easing: self.easing,
+            onComplete: function() {
+              self.sigInst.refresh();
+              for (var i = 0; i < nodes.length; i++) {
+                nodes[i].fr = null;
+                nodes[i].fr_x = null;
+                nodes[i].fr_y = null;
+              }
+              // _eventEmitter[self.sigInst.id].dispatchEvent('stop');
+            },
+            duration: self.duration
+          }
+        );
+      }
+      else {
+        // Apply changes
+        for (var i = 0; i < nodes.length; i++) {
+          nodes[i].x = nodes[i].fr_x;
+          nodes[i].y = nodes[i].fr_y;
+        }
+
+        // this.sigInst.refresh();
+        this.sendRefreshEvent();
+
+        for (var i = 0; i < nodes.length; i++) {
+          nodes[i].fr = null;
+          nodes[i].fr_x = null;
+          nodes[i].fr_y = null;
+        }
+        // _eventEmitter[self.sigInst.id].dispatchEvent('stop');
+      }
     };
 
     this.stop = function() {

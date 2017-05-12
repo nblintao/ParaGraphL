@@ -138,7 +138,8 @@ for (iteration = 0; iteration < loop; iteration++) {
     });
   })
   var config = {
-    iterations : 1000
+    iterations : 10000,
+    iterationsPerRender: 1000
   };
   var listener = sigma.layouts.fruchtermanReingoldGL.configure(s, config);
   listener.bind('start stop', func);
