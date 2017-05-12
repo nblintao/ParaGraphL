@@ -30,7 +30,7 @@ var listener = sigma.layouts.fruchtermanReingoldGL.start(sigInst, config);
 Return true if the algorithm is running
 
 ```js
-sigma.layouts.fruchtermanReingoldGL.isRunningGL(sigInst);
+sigma.layouts.fruchtermanReingoldGL.isRunning(sigInst);
 ```
 
 **progress**
