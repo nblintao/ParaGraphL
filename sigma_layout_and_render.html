@@ -96,21 +96,21 @@ graph.links.map(function(d, t) {
 s.refresh();
 
 
-// var force = false;
-// document.getElementById('layout').onclick = function() {
-//   if (!force) {
-//     console.log('Start layout');
-//      s.startForceAtlas2({slowDown: 10});
-//   }
-//   else {
-//     console.log('Stop layout');
-//     s.stopForceAtlas2();
-//   }
+var force = false;
+document.getElementById('layout').onclick = function() {
+  if (!force) {
+    console.log('Start layout');
+     s.startForceAtlas2({slowDown: 10});
+  }
+  else {
+    console.log('Stop layout');
+    s.stopForceAtlas2();
+  }
 
-//   force = !force;
-// };
+  force = !force;
+};
 
-
+/*
 // Start the algorithm:
 var config = {
   iterations : 100
@@ -134,7 +134,7 @@ listener.bind('start stop', function(event) {
 });
 
 sigma.layouts.fruchtermanReingold.start(s);
-
+*/
 
 
 

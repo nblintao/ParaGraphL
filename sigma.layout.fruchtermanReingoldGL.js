@@ -114,7 +114,7 @@ void main()
     // when arr_idx % 4 == 0 update node_idx_buffer
     int buf_offset = arr_idx - arr_idx / 4 * 4;
     if (p == 0 || buf_offset == 0) {
-      node_buffer = texture2D(m, vec2((float(arr_idx / 4) + 0.5) / 
+      node_buffer = texture2D(m, vec2((float(arr_idx / 4) + 0.5) /
                                           float(` + this.textureSize + `) , 1));
     }
     float float_j = buf_offset == 0 ? node_buffer.r :
@@ -122,7 +122,7 @@ void main()
                     buf_offset == 2 ? node_buffer.b :
                                       node_buffer.a;
 
-    vec4 node_j = texture2D(m, vec2((float_j + 0.5) / 
+    vec4 node_j = texture2D(m, vec2((float_j + 0.5) /
                                     float(` + this.textureSize + `), 1));
     float xDist = node_i.r - node_j.r;
     float yDist = node_i.g - node_j.g;
@@ -153,7 +153,7 @@ void main()
   }
 }
 `
-    console.log(sourceCode);
+    // console.log(sourceCode);
     var program = gpgpUtility.createProgram(null, sourceCode);
     this.positionHandle = gpgpUtility.getAttribLocation(program,  "position");
     gl.enableVertexAttribArray(this.positionHandle);
@@ -222,7 +222,7 @@ void main()
         }
       }
       // Dummy
-      while (dataArray.length % 4 != 0) 
+      while (dataArray.length % 4 != 0)
         dataArray.push(0);
       // console.log(dataArray);
       return new Float32Array(dataArray);
@@ -297,8 +297,8 @@ void main()
       if (!this.setupGo()) {
         return;
       }
-       
-      
+
+
       // console.log(this.iterCount);
       while (this.running) {
         var tmp = this.texture_input;
@@ -325,7 +325,7 @@ void main()
       //     dy: 0
       //   };
       // }
-      
+
       this.go();
     };
 

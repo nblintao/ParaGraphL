@@ -74,13 +74,14 @@ var sum_val = 0.0;
 // Bind all events:
 var start_time;
 var func = function(event) {
-  console.log(event.type);
+  var now = performance.now();
+  console.log(event.type + ' ' + now);
   if (event.type == 'start') {
-    start_time = performance.now();
+    start_time = now;
   }
   else {
-    var end_time = performance.now();
-    duration += end_time - start_time;
+    var end_time = now;
+    duration = end_time - start_time;
     if (iteration === 0) {
       min_val = duration;
       max_val = duration;
@@ -121,10 +122,10 @@ for (iteration = 0; iteration < loop; iteration++) {
     s.graph.addNode({
       id: d.id,
       label: 'Node ' + d.id,
-      // x: Math.random(),
-      // y: Math.random(),
-      x: d.id % 97,
-      y: d.id % 31,
+      x: Math.random(),
+      y: Math.random(),
+      // x: d.id % 97,
+      // y: d.id % 31,
       size: 0
     });
   })
@@ -138,11 +139,12 @@ for (iteration = 0; iteration < loop; iteration++) {
     });
   })
   var config = {
-    iterations : 100,
+    iterations : 1000,
   };
-  var listener = sigma.layouts.fruchtermanReingoldGL.configure(s, config);
+  var layout = sigma.layouts.fruchtermanReingoldGL;
+  var listener = layout.configure(s, config);
   listener.bind('start stop', func);
-  sigma.layouts.fruchtermanReingoldGL.start(s);
+  layout.start(s);
   hahaha = s;
 }
 
