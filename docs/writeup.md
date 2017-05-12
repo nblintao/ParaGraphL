@@ -49,7 +49,7 @@ We are utilizing Fruchterman Reingold layout algorithm. In one iteration, each n
 
 Since the computation between nodes are independent in each iteration and a large portion of the memory read can be sequential if we optimize the memory layout, the algorithm is extremely suitable for SPMD program that runs on GPU. 
 
-##Approach 
+## Approach 
 
 The
 If we put the coordinates for nodes together then followed by edges for each nodes in the global memory, we perform sequential read when computing the repulsive force and when scannig through edge arrays for each node. Thus the program exploits data locality.
