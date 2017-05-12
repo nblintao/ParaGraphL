@@ -1,7 +1,9 @@
 ---
-title: ParaGraphL
+title: Final Write-up
 ---
-# Summary
+# Final Write-up
+
+## Summary
 
 We implemented a JavaScript framework for calculating the layout for large-scale graphs in the web platform. We use the GLSL on WebGL to do general purpose computation for the graph layout algorithm.
 
@@ -45,15 +47,15 @@ sigma.layouts.fruchtermanReingoldGL.progress(sigInst);
 
 Graph layout algorithms take a series of nodes' coordinates and edges as input, iteratively update the position of each node. These algorithms execute for some iterations or until convergence.
 
-We are utilizing Fruchterman Reingold layout algorithm. In one iteration, each node will compute a repulsive force by accessing the positions of all other nodes, and an attractive force by accessing the positions of connected nodes, and then add gravity and speed to get a new position. 
+We are utilizing Fruchterman Reingold layout algorithm. In one iteration, each node will compute a repulsive force by accessing the positions of all other nodes, and an attractive force by accessing the positions of connected nodes, and then add gravity and speed to get a new position.
 
-Since the computation between nodes are independent in each iteration and a large portion of the memory read can be sequential if we optimize the memory layout, the algorithm is extremely suitable for SPMD program that runs on GPU. 
+Since the computation between nodes are independent in each iteration and a large portion of the memory read can be sequential if we optimize the memory layout, the algorithm is extremely suitable for SPMD program that runs on GPU.
 
-## Approach 
+## Approach
 
 We utilize the interface of WebGL library to do general porpuse computation for the layout, the renderer library is sigma.js, which is also based on WebGL.
 
-WebGL is not designed for general purpose computation, it's a renderer library. It works as follow : in each iteration, a shader program takes an array of input pixels, performs computation and writes to an output pixel. To perform the computation of the layout algorihthm, we need to design proper data structures and work flows under this computation framework. 
+WebGL is not designed for general purpose computation, it's a renderer library. It works as follow : in each iteration, a shader program takes an array of input pixels, performs computation and writes to an output pixel. To perform the computation of the layout algorihthm, we need to design proper data structures and work flows under this computation framework.
 
 ![](https://raw.githubusercontent.com/nblintao/ParaGraphL/master/docs/WebGLFlow.png "WebGLFlow")
 
@@ -63,7 +65,7 @@ Layout algorithms are iterative, in each iteration, we need to update the X & Y 
 
 Another issue is that the memory is limited for the GPU in our laptops. We aim at generating graph layouts for graphs containing tens of thousands of nodes, so in order for the nodes and edges of the graph to fit into the memory of the GPU, we need to optimize the memory layout of the graph. Our optimized memory layout will be shown in several paragraphs.
 
-We currently utilizes Fruchterman Reingold algothim. In each iteration, each node apply three types of forces, repulsive force, attractive force and gravity, then update the X & Y coordination respectively. Repulsive force is applied for each pair of nodes to keep them from getting too close, attractive force is applied for each edge to pull the source node and destination node towards each other and the gravity pull each node towards the origin, which prevent clusters from getting too far from each other. This computation is memory bound because the most time consuming computation is when applying the repulsive force for each node which perform 10 arithmetic operations on four 32-bit reads. 
+We currently utilizes Fruchterman Reingold algothim. In each iteration, each node apply three types of forces, repulsive force, attractive force and gravity, then update the X & Y coordination respectively. Repulsive force is applied for each pair of nodes to keep them from getting too close, attractive force is applied for each edge to pull the source node and destination node towards each other and the gravity pull each node towards the origin, which prevent clusters from getting too far from each other. This computation is memory bound because the most time consuming computation is when applying the repulsive force for each node which perform 10 arithmetic operations on four 32-bit reads.
 
 ![](https://raw.githubusercontent.com/nblintao/ParaGraphL/master/docs/Algorithm.png "Algorithm")
 
@@ -81,8 +83,12 @@ We have achieved significant speedup, compared to an implementation without WebG
 
 We test the program multiple times on a graph with 100, 500, 1000 edges and get the average runtime. The error is within 3%. We could achieve about 32x speedup for the layout of a graph with 500 edges in 10000 iterations on New MacBook. Furthermore, we get 75x speedup for a graph with 1000 edges in 10000 iterations.
 
+![](https://nblintao.github.io/ParaGraphL/figure/edge.svg)
 
-![](https://docs.google.com/spreadsheets/d/1_oFw0mLP40VYmBR3hsil_GXz2kpFIqRnAGwQcRqrzoE/pubchart?oid=1497158958&format=image)
+![](https://nblintao.github.io/ParaGraphL/figure/iteration.svg)
+
+
+The original data of two figures above could be viewed at [Google Sheets](https://docs.google.com/spreadsheets/d/1t5Egy3CGMco7_EZiTyODTtaexcrO11UQ0YUMZgRgo30/edit?usp=sharing).
 
 # References
 
