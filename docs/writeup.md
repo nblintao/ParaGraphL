@@ -55,7 +55,7 @@ We utilize the interface of WebGL library to do general porpuse computation for 
 
 WebGL is not designed for general purpose computation, it's a renderer library. It works as follow : in each iteration, a shader program takes an array of input pixels, performs computation and writes to an output pixel. To perform the computation of the layout algorihthm, we need to design proper data structures and work flows under this computation framework. 
 
-[// TODO image]
+![](https://raw.githubusercontent.com/nblintao/ParaGraphL/master/docs/WebGLFlow.png "WebGLFlow")
 
 Layout algorithms are iterative, in each iteration, we need to update the X & Y coordination for each node. We're utilizing WebGL by generating a shader program for each node that takes the output of previous iteration's computation as input and update the X & Y coordination to the output pixel.
 
@@ -65,11 +65,11 @@ Another issue is that the memory is limited for the GPU in our laptops. We aim a
 
 We currently utilizes Fruchterman Reingold algothim. In each iteration, each node apply three types of forces, repulsive force, attractive force and gravity, then update the X & Y coordination respectively. Repulsive force is applied for each pair of nodes to keep them from getting too close, attractive force is applied for each edge to pull the source node and destination node towards each other and the gravity pull each node towards the origin, which prevent clusters from getting too far from each other. This computation is memory bound because the most time consuming computation is when applying the repulsive force for each node which perform 10 arithmetic operations on four 32-bit reads. 
 
-[// TODO image]
+![](https://raw.githubusercontent.com/nblintao/ParaGraphL/master/docs/Algorithm.png "Algorithm")
 
 The memory layout is shown in the picture below. Each box in the array is a pixel that contains four 32-bit float which stands for r, g, b, and a. We pack the data structure for nodes together and store them at the begining of the input array, each pixel stores a node's data. Edges are following the nodes in the array. The edges for each node are stored together and placed in the array in the same order as the corresponding nodes. Each pixel for a node store the X & Y coordinations, the offset of the edges of the node in the array and the number of edges. Each edge only need to store the destination node id, which is a 32-bit value.
 
-[// TODO image]
+![](https://raw.githubusercontent.com/nblintao/ParaGraphL/master/docs/Layout.png "Layout")
 
 The memory layout give us several benefits. First, most of the memory access are sequential reads, and there's little divergent execution. Because when we compute the repulsive force for different nodes, we access all other node's data structure in the same sequential order. When we compute the attractive force for a node, the edge array for adjacent nodes are stored together in the array, we perform sequential read here for most of the time. We do random read only when we need to access neighbor's coordinates, but that's infrequent compared to the sequential reads. Since the computation is memory bound, the design exploits data locality and thus provides us decent speedup.
 
