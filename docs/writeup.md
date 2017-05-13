@@ -10,9 +10,7 @@ Equal work was performed by both project members.
 
 ## Summary
 
-We implemented a JavaScript framework for calculating the layout for large-scale graphs in the web platform. We use the GLSL on WebGL to do general purpose computation for the graph layout algorithm.
-
-This is a significant feature for data scientists, artists, and journalists, who would love to visualize and analysis large-scale graph efficiently in an interactive manner. They want to access it across all platforms by just opening a web page, instead of installing a software like [Gephi](https://gephi.org/).
+We implemented a JavaScript framework for computing the layout for large-scale graphs in the web platform. We use the GLSL on WebGL to do general purpose computation for a force-directed graph layout algorithm.
 
 ## Usage
 
@@ -21,7 +19,7 @@ This is a significant feature for data scientists, artists, and journalists, who
 Change the configuration of the layout
 
 ```js
-var listener = sigma.layouts.fruchtermanReingoldGL.configure(sigInst, config);
+var listener = sigma.layouts.paragraphl.configure(sigInst, config);
 ```
 
 **start**
@@ -29,24 +27,10 @@ var listener = sigma.layouts.fruchtermanReingoldGL.configure(sigInst, config);
 Start the layout algorithm
 
 ```js
-var listener = sigma.layouts.fruchtermanReingoldGL.start(sigInst, config);
+var listener = sigma.layouts.paragraphl.start(sigInst, config);
 ```
 
-**isRunning**
-
-Return true if the algorithm is running
-
-```js
-sigma.layouts.fruchtermanReingoldGL.isRunning(sigInst);
-```
-
-**progress**
-
-Return the percentage of the iterations done 0% - 100%
-
-```js
-sigma.layouts.fruchtermanReingoldGL.progress(sigInst);
-```
+See [**demo_para.html**](https://nblintao.github.io/ParaGraphL/demo/demo_paragraphl.html) for an example of using ParaGraphL.
 
 ## Background
 
@@ -92,7 +76,7 @@ We benchmark the results on a MabBook Air. The CPU is 1.6GHz dual-core Intel Cor
 
 The dataset we use is [a collaboration network of authors on arXiv](https://snap.stanford.edu/data/ca-GrQc.html). We sample it to graphs with different numbers of edges for testing.
 
-Here is a quick **demo** for you to play around. It uses a graph with 1000 edges and 563 nodes. It has 100 iterations before outputting the result. Typically, it takes about 10 seconds for [the baseline](https://nblintao.github.io/ParaGraphL/demo/demo_paragraphl.html), and less than 1 second for [ParaGraphL](https://nblintao.github.io/ParaGraphL/demo/demo_paragraphl.html), if WebGL is enabled in your browser.
+Here is a quick **demo** for you to play around. It uses a graph with 1000 edges and 563 nodes. It has 100 iterations before outputting the result. Typically, it takes about 10 seconds for [**the baseline**](https://nblintao.github.io/ParaGraphL/demo/demo_sigma.html), and less than 1 second for [**ParaGraphL**](https://nblintao.github.io/ParaGraphL/demo/demo_paragraphl.html), if WebGL is enabled in your browser.
 
 We first tested the speedup on graphs with different numbers of edges, to see if it scales to large graph or not. Here are the results:
 
