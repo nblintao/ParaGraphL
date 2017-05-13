@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 
-<script src="third_party/sigma.js/build/sigma.min.js"></script>
-<script src="third_party/sigma.js/build/plugins/sigma.plugins.animate.min.js"></script>
+<script src="sigma.min.js"></script>
+<script src="sigma.plugins.animate.min.js"></script>
 <script src="GPGPUtility.js"></script>
-<script src="sigma.layout.fruchtermanReingoldGL.js"></script>
 <script src="sigma.layout.fruchtermanReingold.js"></script>
-<script src="data/grqc_auto.js"></script>
-
-
+<script src="sigma.layout.paragraphl.js"></script>
+<script src="grqc_auto.js"></script>
 
 <style>
   #webgl {
@@ -139,13 +137,16 @@ for (iteration = 0; iteration < loop; iteration++) {
     });
   })
   var config = {
-    iterations : 1000,
+    iterations : 100,
   };
-  var layout = sigma.layouts.fruchtermanReingoldGL;
+
+  // Choose one of the layout implementations
+  // var layout = sigma.layouts.fruchtermanReingold;
+  var layout = sigma.layouts.paragraphl;
+
   var listener = layout.configure(s, config);
   listener.bind('start stop', func);
   layout.start(s);
-  hahaha = s;
 }
 
 document.getElementById('MaxTime').innerText = 'Max: ' + max_val + ' ms';

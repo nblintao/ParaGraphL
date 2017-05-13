@@ -8,10 +8,10 @@
     throw new Error('vizit is not declared');
 
   // Initialize package:
-  sigma.utils.pkg('sigma.layouts.fruchtermanReingoldGL');
+  sigma.utils.pkg('sigma.layouts.paragraphl');
 
   /**
-   * Sigma Fruchterman-Reingold GL
+   * Sigma ParaGraphL: Fruchterman-Reingold with WebGL
    * ===============================
    * Tao Lin, Bowei Chen
    * Based on:
@@ -422,7 +422,7 @@ void main()
    *
    * @return {sigma.classes.dispatcher} Returns an event emitter.
    */
-  sigma.layouts.fruchtermanReingoldGL.configure = function(sigInst, config) {
+  sigma.layouts.paragraphl.configure = function(sigInst, config) {
     if (!sigInst) throw new Error('Missing argument: "sigInst"');
     if (!config) throw new Error('Missing argument: "config"');
 
@@ -480,7 +480,7 @@ void main()
    *
    * @return {sigma.classes.dispatcher} Returns an event emitter.
    */
-  sigma.layouts.fruchtermanReingoldGL.start = function(sigInst, config) {
+  sigma.layouts.paragraphl.start = function(sigInst, config) {
     if (!sigInst) throw new Error('Missing argument: "sigInst"');
 
     if (config) {
@@ -499,7 +499,7 @@ void main()
    *
    * @return {boolean}
    */
-  sigma.layouts.fruchtermanReingoldGL.isRunning = function(sigInst) {
+  sigma.layouts.paragraphl.isRunning = function(sigInst) {
     if (!sigInst) throw new Error('Missing argument: "sigInst"');
 
     return !!_instance[sigInst.id] && _instance[sigInst.id].running;
@@ -513,7 +513,7 @@ void main()
    *
    * @return {number} A value between 0 and 1.
    */
-  sigma.layouts.fruchtermanReingoldGL.progress = function(sigInst) {
+  sigma.layouts.paragraphl.progress = function(sigInst) {
     if (!sigInst) throw new Error('Missing argument: "sigInst"');
 
     return (_instance[sigInst.id].config.iterations - _instance[sigInst.id].iterCount) /
