@@ -12,25 +12,27 @@ Equal work was performed by both project members.
 
 We implemented a JavaScript framework for computing the layout for large-scale graphs in the web platform. We use the GLSL on WebGL to do general purpose computation for a force-directed graph layout algorithm.
 
-## Usage
+## Source Code, API, and Example
 
-**configure**
+We implemented ParaGraphL as a layout plugin for Sigma. The source code is [sigma.layout.paragraphl.js](https://github.com/nblintao/ParaGraphL/blob/master/sigma.layout.paragraphl.js).
 
-Change the configuration of the layout
+### Configure
+
+Change the configuration of the layout. Send the data of the graph as a Sigma object `sigInst`. Configure `iterations` in `config`.
 
 ```js
-var listener = sigma.layouts.paragraphl.configure(sigInst, config);
+sigma.layouts.paragraphl.configure(sigInst, config);
 ```
 
-**start**
+### Start
 
 Start the layout algorithm
 
 ```js
-var listener = sigma.layouts.paragraphl.start(sigInst, config);
+sigma.layouts.paragraphl.start(sigInst, config);
 ```
 
-See [**demo_para.html**](https://nblintao.github.io/ParaGraphL/demo/demo_paragraphl.html) for an example of using ParaGraphL.
+See [**demo.html**](https://github.com/nblintao/ParaGraphL/blob/master/demo.html) for an example of using ParaGraphL.
 
 ## Background
 
@@ -65,7 +67,7 @@ This memory layout gives us several benefits. First, most of the memory access a
 
 The shader program for a target node first apply repulsive force from all nodes to the target node by iterating through the nodes in the input array. Then it reads the destinations of the target node's edges and apply attractive forces from the destinations to the node. After that it applies gravity and compute the new X & Y coordinates and  finally it write to the output texture.
 
-## Results
+## Demo and Results
 
 We have achieved significant speedup, compared to an implementation without WebGL on [Fruchterman Reingold graph layout algorithm](https://github.com/gephi/gephi/wiki/Fruchterman-Reingold). To our knowledge, we are the first one who implements graph layout algorithms with WebGL.
 
