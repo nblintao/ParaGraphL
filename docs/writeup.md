@@ -16,8 +16,6 @@ We implemented a JavaScript framework for computing the layout for large-scale g
 
 Graph layout algorithms take a series of nodes' coordinates and edges as input, iteratively update the position of each node. These algorithms execute for some iterations or until convergence.
 
-We are utilizing Fruchterman Reingold layout algorithm. In one iteration, each node will compute a repulsive force by accessing the positions of all other nodes, and an attractive force by accessing the positions of connected nodes, and then add gravity and speed to get a new position.
-
 Since the computation between nodes is independent in each iteration and a large portion of the memory read can be sequential if we optimize the memory layout, the algorithm is extremely suitable for SPMD program that runs on GPU.
 
 ## Approach
