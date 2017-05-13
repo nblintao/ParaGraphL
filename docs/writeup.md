@@ -14,6 +14,9 @@ We implemented a JavaScript framework for computing the layout for large-scale g
 
 ## Background
 
+It is a common desire of data scientists and some artists to visualize, interact, and analyze large-scale graphs on a web platform. Honestly, running on browsers with JavaScript is not the most efficient platform to calculate the layout of large graphs, considering some great graph visualization software like [Gephi](https://gephi.org/). But browsers is a popular visualization platform because of the cost of deployment and maintenance and other business and engineering reasons ([Why in the browser?](http://slides.com/nicolasjoseph/largescalevis#/5)). It would be fascinating if an end user could visualize and interactive with large-scale graphs by simply opening a web page without any installment or configuration.
+
+
 Graph layout algorithms take a series of nodes' coordinates and edges as input, iteratively update the position of each node. These algorithms execute for some iterations or until convergence.
 
 Since the computation between nodes is independent in each iteration and a large portion of the memory read can be sequential if we optimize the memory layout, the algorithm is extremely suitable for SPMD program that runs on GPU.
@@ -58,7 +61,7 @@ sigma.layouts.paragraphl.configure(sigInst, config);
 
 #### Start
 
-Start the layout algorithm
+Start the layout algorithm.
 
 ```js
 sigma.layouts.paragraphl.start(sigInst, config);
