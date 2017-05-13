@@ -63,7 +63,7 @@ We utilize the interface of WebGL library to do general purpose computations on 
 WebGL is not designed for general purpose computation, it's a renderer library. It works as follow: in each iteration, a shader program takes an array of input pixels, performs computation and writes to an output pixel. To perform the computation of the layout algorithm, we need to design proper data structures and workflows under this computation framework.
 
 ![](https://raw.githubusercontent.com/nblintao/ParaGraphL/master/docs/WebGLFlow.png "WebGLFlow")
-[](http://www.vizitsolutions.com/portfolio/webgl/gpgpu/index.html)
+[http://www.vizitsolutions.com/portfolio/webgl/gpgpu/index.html](http://www.vizitsolutions.com/portfolio/webgl/gpgpu/index.html)
 
 Layout algorithms are iterative, in each iteration, we need to update the X & Y coordination for each node. We're utilizing WebGL by generating a shader program for each node that takes the output of previous iteration's computation as input and updates the X & Y coordination to the output pixel. 
 
