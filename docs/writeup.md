@@ -92,6 +92,8 @@ We benchmark the results on a MabBook Air. The CPU is 1.6GHz dual-core Intel Cor
 
 The dataset we use is [a collaboration network of authors on arXiv](https://snap.stanford.edu/data/ca-GrQc.html). We sample it to graphs with different numbers of edges for testing.
 
+Here is a quick **demo** for you to play around. It uses a graph with 1000 edges and 563 nodes. It has 100 iterations before outputting the result. Typically, it takes about 10 seconds for [the baseline](https://nblintao.github.io/ParaGraphL/demo/demo_paragraphl.html), and less than 1 second for [ParaGraphL](https://nblintao.github.io/ParaGraphL/demo/demo_paragraphl.html), if WebGL is enabled in your browser.
+
 We first tested the speedup on graphs with different numbers of edges, to see if it scales to large graph or not. Here are the results:
 
 ![](https://nblintao.github.io/ParaGraphL/figure/edge.svg)
