@@ -16,8 +16,11 @@ We implemented a JavaScript framework for computing the layout for large-scale g
 
 It is a common desire of data scientists and some artists to visualize, interact, and analyze large-scale graphs on a web platform. Honestly, running on browsers with JavaScript is not the most efficient platform to calculate the layout of large graphs, considering some great graph visualization software like [Gephi](https://gephi.org/). But browsers is a popular visualization platform because of the cost of deployment and maintenance and other business and engineering reasons ([Why in the browser?](http://slides.com/nicolasjoseph/largescalevis#/5)). It would be fascinating if an end user could visualize and interactive with large-scale graphs by simply opening a web page without any installment or configuration.
 
-
 Graph layout algorithms take a series of nodes' coordinates and edges as input, iteratively update the position of each node. These algorithms execute for some iterations or until convergence.
+
+We currently utilize Fruchterman Reingold algorithm. In each iteration, each node applies three types of forces, repulsive force, attractive force and gravity, then update the X & Y coordination respectively. The repulsive force is applied to each pair of nodes to keep them from getting too close, the attractive force is applied to each edge to pull the source node and destination node towards each other and the gravity pull each node towards the origin, which prevents clusters from getting too far from each other. This computation is memory bound because the most time-consuming computation is when applying the repulsive force for each node which performs 10 float-point arithmetic operations on four 32-bit reads.
+
+![](https://raw.githubusercontent.com/nblintao/ParaGraphL/master/docs/Algorithm.png "Algorithm")
 
 Since the computation between nodes is independent in each iteration and a large portion of the memory read can be sequential if we optimize the memory layout, the algorithm is extremely suitable for SPMD program that runs on GPU.
 
@@ -33,10 +36,6 @@ WebGL is not designed for general purpose computation, it's a renderer library. 
 Layout algorithms are iterative, in each iteration, we need to update the X & Y coordination for each node. We're utilizing WebGL by generating a shader program for each node that takes the output of previous iteration's computation as input and updates the X & Y coordination to the output pixel.
 
 Another issue is that the memory is limited for the GPU in our laptops. We aim at generating graph layouts for graphs containing tens of thousands of nodes, so in order for the nodes and edges of the graph to fit into the memory of the GPU, we need to optimize the memory layout of the graph. Our optimized memory layout will be shown in several paragraphs.
-
-We currently utilize Fruchterman Reingold algorithm. In each iteration, each node applies three types of forces, repulsive force, attractive force and gravity, then update the X & Y coordination respectively. The repulsive force is applied to each pair of nodes to keep them from getting too close, the attractive force is applied to each edge to pull the source node and destination node towards each other and the gravity pull each node towards the origin, which prevents clusters from getting too far from each other. This computation is memory bound because the most time-consuming computation is when applying the repulsive force for each node which performs 10 float-point arithmetic operations on four 32-bit reads.
-
-![](https://raw.githubusercontent.com/nblintao/ParaGraphL/master/docs/Algorithm.png "Algorithm")
 
 The memory layout is shown in the picture below. Each box in the array is a pixel that contains four 32-bit float which stands for r, g, b, and a. We pack the data structure for nodes together and store them at the beginning of the input array, each pixel stores a node's data. Edges are following the nodes in the array. The edges for each node are stored together and placed in the array in the same order as the corresponding nodes. Each pixel for a node store the X & Y coordinations, the offset of the edges of the node in the array and the number of edges. Each edge only needs to store the destination node id, which is a 32-bit value.
 
