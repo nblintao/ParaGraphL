@@ -12,28 +12,6 @@ Equal work was performed by both project members.
 
 We implemented a JavaScript framework for computing the layout for large-scale graphs in the web platform. We use the GLSL on WebGL to do general purpose computation for a force-directed graph layout algorithm.
 
-## Source Code, API, and Example
-
-We implemented ParaGraphL as a layout plugin for Sigma. The source code is [sigma.layout.paragraphl.js](https://github.com/nblintao/ParaGraphL/blob/master/sigma.layout.paragraphl.js).
-
-### Configure
-
-Change the configuration of the layout. Send the data of the graph as a Sigma object `sigInst`. Configure `iterations` in `config`.
-
-```js
-sigma.layouts.paragraphl.configure(sigInst, config);
-```
-
-### Start
-
-Start the layout algorithm
-
-```js
-sigma.layouts.paragraphl.start(sigInst, config);
-```
-
-See [**demo.html**](https://github.com/nblintao/ParaGraphL/blob/master/demo.html) for an example of using ParaGraphL.
-
 ## Background
 
 Graph layout algorithms take a series of nodes' coordinates and edges as input, iteratively update the position of each node. These algorithms execute for some iterations or until convergence.
@@ -66,6 +44,30 @@ The memory layout is shown in the picture below. Each box in the array is a pixe
 This memory layout gives us several benefits. First, most of the memory access are sequential reads, and there's little divergent execution. Because when we compute the repulsive force for different nodes, we access all other node's data structure in the same sequential order. When we compute the attractive force for a node, the edge array for adjacent nodes are stored together in the array, we perform sequential read here for most of the time. We do random read-only when we need to access neighbor's coordinates, but that's infrequent compared to the sequential reads. Since the computation is memory bound, the design exploits data locality and thus provides us decent speedup.
 
 The shader program for a target node first apply repulsive force from all nodes to the target node by iterating through the nodes in the input array. Then it reads the destinations of the target node's edges and apply attractive forces from the destinations to the node. After that it applies gravity and compute the new X & Y coordinates and  finally it write to the output texture.
+
+## Deliverables
+### Source Code
+
+We implemented ParaGraphL as a layout plugin for Sigma. The source code is [sigma.layout.paragraphl.js](https://github.com/nblintao/ParaGraphL/blob/master/sigma.layout.paragraphl.js).
+### APIs
+#### Configure
+
+Change the configuration of the layout. Send the data of the graph as a Sigma object `sigInst`. Configure `iterations` in `config`.
+
+```js
+sigma.layouts.paragraphl.configure(sigInst, config);
+```
+
+#### Start
+
+Start the layout algorithm
+
+```js
+sigma.layouts.paragraphl.start(sigInst, config);
+```
+### Example
+See [**demo.html**](https://github.com/nblintao/ParaGraphL/blob/master/demo.html) for an example of using ParaGraphL.
+
 
 ## Demo and Results
 
