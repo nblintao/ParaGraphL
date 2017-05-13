@@ -76,11 +76,11 @@ We have achieved significant speedup, compared to an implementation without WebG
 
 The baseline is an implementation of Fruchterman Reingold layout algorithm provided by Sigma.js. It is a popular JavaScript library dedicated to graph visualization. It does not use GPU to calculate the layout. Our version uses the same algorithm and configurations to make a fair comparison.
 
-We benchmark the results on a MabBook Air. The CPU is 1.6GHz dual-core Intel Core i5. The GPU is Intel HD Graphics 6000. Yes, an integrated graphics card also works. To be accurate, we run each experiment five times and take the average.
+We benchmark the results on a MabBook Air. The CPU is 1.6GHz dual-core Intel Core i5. The GPU is Intel HD Graphics 6000. Yes, an integrated graphics card also works. The browser we use is Google Chrome 58.0.3029.96 (64-bit). To be accurate, we run each experiment five times and take the average.
 
 The dataset we use is [a collaboration network of authors on arXiv](https://snap.stanford.edu/data/ca-GrQc.html). We sample it to graphs with different numbers of edges for testing.
 
-Here is a quick **demo** for you to play around. It uses a graph with 1000 edges and 563 nodes. It has 100 iterations before outputting the result. Typically, it takes about 10 seconds for [**the baseline**](https://nblintao.github.io/ParaGraphL/demo/demo_sigma.html), and less than 1 second for [**ParaGraphL**](https://nblintao.github.io/ParaGraphL/demo/demo_paragraphl.html), if WebGL is enabled in your browser.
+Here is a quick **demo** for you to play around. It uses a graph with 10000 edges and 3285 nodes. It has 100 iterations before outputting the result. Typically,  [**ParaGraphL**](https://nblintao.github.io/ParaGraphL/demo/demo_paragraphl.html) is faster than [**the baseline**](https://nblintao.github.io/ParaGraphL/demo/demo_sigma.html), if WebGL is enabled in your browser.
 
 We first tested the speedup on graphs with different numbers of edges, to see if it scales to large graph or not. Here are the results:
 
