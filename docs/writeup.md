@@ -48,7 +48,7 @@ The shader program for a target node first apply repulsive force from all nodes 
 ## Deliverables
 ### Source Code
 
-We implemented ParaGraphL as a layout plugin for Sigma. The source code is [sigma.layout.paragraphl.js](https://github.com/nblintao/ParaGraphL/blob/master/sigma.layout.paragraphl.js).
+We implemented ParaGraphL as a layout plugin for Sigma. The source code is [**sigma.layout.paragraphl.js**](https://github.com/nblintao/ParaGraphL/blob/master/sigma.layout.paragraphl.js).
 ### APIs
 #### Configure
 
