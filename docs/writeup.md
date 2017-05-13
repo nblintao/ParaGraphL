@@ -85,7 +85,11 @@ We test the program multiple times on a graph with 100, 500, 1000 edges and get 
 
 ![](https://nblintao.github.io/ParaGraphL/figure/edge.svg)
 
+![](https://nblintao.github.io/ParaGraphL/figure/edge_layout.svg)
+
 ![](https://nblintao.github.io/ParaGraphL/figure/iteration.svg)
+
+![](https://nblintao.github.io/ParaGraphL/figure/iteration_layout.svg)
 
 
 The original data of two figures above could be viewed at [Google Sheets](https://docs.google.com/spreadsheets/d/1t5Egy3CGMco7_EZiTyODTtaexcrO11UQ0YUMZgRgo30/edit?usp=sharing).
