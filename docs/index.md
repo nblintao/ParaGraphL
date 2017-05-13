@@ -76,7 +76,7 @@ The baseline is an implementation of Fruchterman Reingold layout algorithm provi
 
 The dataset we use is [a collaboration network of authors on arXiv](https://snap.stanford.edu/data/ca-GrQc.html). We sample it to graphs with different numbers of edges for testing.
 
-Here is a quick **demo** for you to play around. It uses a graph with 10000 edges and 3285 nodes. It has 100 iterations before outputting the result. Typically,  [**ParaGraphL(click me for demo)**](https://nblintao.github.io/ParaGraphL/demo/demo_paragraphl.html) is faster than [**the baseline(click me for demo)**](https://nblintao.github.io/ParaGraphL/demo/demo_sigma.html), if WebGL is enabled in your browser.
+Here is a quick **demo** for you to play around. It uses a graph with 10000 edges and 3285 nodes. It has 100 iterations before outputting the result. Typically,  [**ParaGraphL (click me for demo)**](https://nblintao.github.io/ParaGraphL/demo/demo_paragraphl.html) is faster than [**the baseline (click me for demo)**](https://nblintao.github.io/ParaGraphL/demo/demo_sigma.html), if WebGL is enabled in your browser.
 
 We benchmark the results on a MabBook Air. The CPU is 1.6GHz dual-core Intel Core i5. The GPU is Intel HD Graphics 6000. Yes, an integrated graphics card also works. The browser we use is Google Chrome 58.0.3029.96 (64-bit). To be accurate, we run each experiment five times and take the average.
 
