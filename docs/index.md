@@ -127,3 +127,5 @@ Some other references are cited by the hyperlink where they are mentioned.
 ### [Checkpoint](https://nblintao.github.io/ParaGraphL/checkpoint)
 
 ### [~~Preliminary Write-up~~](https://nblintao.github.io/ParaGraphL/preliminary)
+
+### [Final Presentation](https://drive.google.com/file/d/0B3xZ4cl-9RzYUmtxQWpUYU1RSVk/view?usp=sharing)
